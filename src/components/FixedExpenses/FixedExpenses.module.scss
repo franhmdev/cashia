@@ -446,7 +446,7 @@ $tpl-cols: 1fr 72px 108px 64px;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-4) var(--space-5);
-    background: var(--color-surface);
+    background: $fe-surface;
     border-bottom: 1px solid $fe-border;
     flex-shrink: 0;
   }
@@ -489,7 +489,7 @@ $tpl-cols: 1fr 72px 108px 64px;
   grid-template-columns: #{$tpl-cols};
   align-items: center;
   padding: var(--space-2) var(--space-5);
-  background: var(--color-surface);
+  background: $fe-surface;
   border-bottom: 1px solid $fe-border;
 
   span {
