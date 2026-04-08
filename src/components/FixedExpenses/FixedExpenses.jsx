@@ -93,7 +93,7 @@ function ExpenseRow({ expense, onToggle, onEdit, onDelete }) {
         <span className={styles['expense__check-box']} aria-hidden="true" />
       </label>
       <span className={styles['expense__name']}>{expense.name}</span>
-      <span className={styles['expense__day']}>{expense.due_day ? `día ${expense.due_day}` : '—'}</span>
+      <span className={styles['expense__day']}>{expense.due_day ? `Día ${expense.due_day}` : '—'}</span>
       <span className={styles['expense__amount']}>{fmt(expense.amount)}</span>
       <div className={styles['expense__actions']}>
         <button className={styles['expense__edit-btn']} onClick={onEdit} title="Editar">
