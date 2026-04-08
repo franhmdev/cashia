@@ -4,6 +4,7 @@
 // =============================================================================
 import { useState } from 'react'
 import { useFixedExpenses } from '@/hooks/useFixedExpenses'
+import { useFixedExpenseTemplates } from '@/hooks/useFixedExpenseTemplates'
 import styles from './FixedExpenses.module.scss'
 
 const fmt = (n) =>
@@ -53,6 +54,19 @@ function PlusIcon() {
     <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
       <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
       <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function SlidersIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+      <line x1="4"  y1="6"  x2="20" y2="6"  stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <line x1="4"  y1="12" x2="20" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <line x1="4"  y1="18" x2="20" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="8"  cy="6"  r="2.5" fill="white" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="16" cy="12" r="2.5" fill="white" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="10" cy="18" r="2.5" fill="white" stroke="currentColor" strokeWidth="1.8" />
     </svg>
   )
 }
@@ -234,15 +248,198 @@ function AddRow({ onSave, onCancel }) {
   )
 }
 
+// ─── Template: fila visualización ────────────────────────────────────────────
+function TemplateRow({ tpl, onEdit, onDelete }) {
+  return (
+    <div className={styles['tpl-row']}>
+      <span className={styles['expense__name']}>{tpl.name}</span>
+      <span className={styles['expense__day']}>{tpl.due_day ? `Día ${tpl.due_day}` : '—'}</span>
+      <span className={styles['expense__amount']}>{fmt(tpl.amount)}</span>
+      <div className={styles['expense__actions']}>
+        <button className={styles['expense__edit-btn']} onClick={onEdit} title="Editar"><PencilIcon /></button>
+        <button className={styles['expense__delete-btn']} onClick={onDelete} title="Eliminar"><MinusCircleIcon /></button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Template: fila edición ───────────────────────────────────────────────────
+function EditTemplateRow({ tpl, onSave, onCancel }) {
+  const [form, setForm] = useState({ name: tpl.name, amount: tpl.amount, due_day: tpl.due_day ?? '' })
+  const [saving, setSaving] = useState(false)
+  const set = (k) => (e) => setForm(prev => ({ ...prev, [k]: e.target.value }))
+  const handleSave = async () => {
+    if (!form.name.trim() || !form.amount) return
+    setSaving(true)
+    const d = parseInt(form.due_day, 10)
+    await onSave({ name: form.name.trim(), amount: parseFloat(form.amount), due_day: d >= 1 && d <= 31 ? d : null })
+    setSaving(false)
+  }
+  const handleKey = (e) => { if (e.key === 'Enter') handleSave(); if (e.key === 'Escape') onCancel() }
+  return (
+    <div className={`${styles['tpl-row']} ${styles['tpl-row--editing']}`}>
+      <input className={styles['expense__input']} value={form.name} onChange={set('name')} onKeyDown={handleKey} placeholder="Nombre" autoFocus />
+      <input className={`${styles['expense__input']} ${styles['expense__input--day']}`} value={form.due_day} onChange={set('due_day')} onKeyDown={handleKey} type="number" min="1" max="31" placeholder="Día" />
+      <input className={`${styles['expense__input']} ${styles['expense__input--amount']}`} value={form.amount} onChange={set('amount')} onKeyDown={handleKey} type="number" min="0" step="0.01" placeholder="0,00" />
+      <div className={styles['expense__actions']}>
+        <button className={styles['expense__save-btn']} onClick={handleSave} disabled={saving} title="Guardar"><CheckIcon /></button>
+        <button className={styles['expense__cancel-btn']} onClick={onCancel} disabled={saving} title="Cancelar"><XIcon /></button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Template: fila nueva ─────────────────────────────────────────────────────
+function AddTemplateRow({ onSave, onCancel }) {
+  const [form, setForm] = useState({ name: '', amount: '', due_day: '' })
+  const [saving, setSaving] = useState(false)
+  const [err, setErr] = useState('')
+  const set = (k) => (e) => { setForm(prev => ({ ...prev, [k]: e.target.value })); setErr('') }
+  const handleSave = async () => {
+    if (!form.name.trim())                   { setErr('El nombre es requerido'); return }
+    if (!form.amount || isNaN(form.amount))  { setErr('Introduce un importe válido'); return }
+    setSaving(true)
+    const d = parseInt(form.due_day, 10)
+    await onSave({ name: form.name.trim(), amount: parseFloat(form.amount), due_day: d >= 1 && d <= 31 ? d : null })
+    setSaving(false)
+  }
+  const handleKey = (e) => { if (e.key === 'Enter') handleSave(); if (e.key === 'Escape') onCancel() }
+  return (
+    <div className={`${styles['tpl-row']} ${styles['tpl-row--editing']}`}>
+      <input className={styles['expense__input']} value={form.name} onChange={set('name')} onKeyDown={handleKey} placeholder="Nombre" autoFocus />
+      <input className={`${styles['expense__input']} ${styles['expense__input--day']}`} value={form.due_day} onChange={set('due_day')} onKeyDown={handleKey} type="number" min="1" max="31" placeholder="Día" />
+      <input className={`${styles['expense__input']} ${styles['expense__input--amount']}`} value={form.amount} onChange={set('amount')} onKeyDown={handleKey} type="number" min="0" step="0.01" placeholder="0,00" />
+      <div className={styles['expense__actions']}>
+        <button className={styles['expense__save-btn']} onClick={handleSave} disabled={saving} title="Guardar"><CheckIcon /></button>
+        <button className={styles['expense__cancel-btn']} onClick={onCancel} disabled={saving} title="Cancelar"><XIcon /></button>
+      </div>
+      {err && <span className={styles['expense__row-error']}>{err}</span>}
+    </div>
+  )
+}
+
+// ─── Modal de gestión de plantillas ──────────────────────────────────────────
+function TemplatesModal({ onClose }) {
+  const { templates, loading, error, add, update, remove } = useFixedExpenseTemplates()
+  const [editingId, setEditingId]   = useState(null)
+  const [deleteItem, setDeleteItem] = useState(null)
+  const [isAdding, setIsAdding]     = useState(false)
+  const [deleting, setDeleting]     = useState(false)
+
+  const handleDelete = async () => {
+    setDeleting(true)
+    await remove(deleteItem.id)
+    setDeleteItem(null)
+    setDeleting(false)
+  }
+
+  const handleOverlayMouseDown = (e) => { if (e.target === e.currentTarget) onClose() }
+
+  return (
+    <div
+      className={styles['tpl-overlay']}
+      onMouseDown={handleOverlayMouseDown}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Plantillas por defecto"
+    >
+      <div className={styles['tpl-panel']}>
+
+        {/* Header */}
+        <div className={styles['tpl-panel__header']}>
+          <h3 className={styles['tpl-panel__title']}>
+            <SlidersIcon />
+            Plantillas por defecto
+          </h3>
+          <button
+            className={styles['fixed__add-btn']}
+            onClick={() => { setIsAdding(true); setEditingId(null) }}
+            aria-label="Nueva plantilla"
+            title="Nueva plantilla"
+          >
+            <PlusIcon />
+          </button>
+          <button className={styles['tpl-panel__close']} onClick={onClose} aria-label="Cerrar panel">
+            <XIcon />
+          </button>
+        </div>
+
+        {/* Cuerpo */}
+        <div className={styles['tpl-panel__body']}>
+          {loading && <p className={styles['fixed__loading']}>Cargando plantillas…</p>}
+          {error   && <p className={styles['fixed__msg-error']}>{error}</p>}
+
+          {!loading && !error && (
+            <>
+              {(templates.length > 0 || isAdding) && (
+                <div className={styles['tpl-cols']}>
+                  <span>Concepto</span>
+                  <span>Fecha</span>
+                  <span>Importe</span>
+                  <span />
+                </div>
+              )}
+
+              {templates.map(tpl =>
+                editingId === tpl.id ? (
+                  <EditTemplateRow
+                    key={tpl.id}
+                    tpl={tpl}
+                    onSave={async (data) => { await update(tpl.id, data); setEditingId(null) }}
+                    onCancel={() => setEditingId(null)}
+                  />
+                ) : (
+                  <TemplateRow
+                    key={tpl.id}
+                    tpl={tpl}
+                    onEdit={() => { setEditingId(tpl.id); setIsAdding(false) }}
+                    onDelete={() => setDeleteItem(tpl)}
+                  />
+                )
+              )}
+
+              {templates.length === 0 && !isAdding && (
+                <p className={styles['fixed__empty']}>
+                  Sin plantillas.{' '}
+                  <button className={styles['fixed__empty-cta']} onClick={() => setIsAdding(true)}>
+                    Crea la primera
+                  </button>
+                </p>
+              )}
+
+              {isAdding && (
+                <AddTemplateRow
+                  onSave={async (data) => { await add(data); setIsAdding(false) }}
+                  onCancel={() => setIsAdding(false)}
+                />
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {deleteItem && (
+        <DeleteModal
+          name={deleteItem.name}
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteItem(null)}
+          loading={deleting}
+        />
+      )}
+    </div>
+  )
+}
+
 // ─── Componente principal ─────────────────────────────────────────────────────
 export function FixedExpenses({ month, year }) {
   const { items, loading, error, add, update, remove, toggle, total, pending } =
     useFixedExpenses(month, year)
 
-  const [editingId, setEditingId]   = useState(null)
-  const [deleteItem, setDeleteItem] = useState(null)
-  const [isAdding, setIsAdding]     = useState(false)
-  const [deleting, setDeleting]     = useState(false)
+  const [editingId, setEditingId]     = useState(null)
+  const [deleteItem, setDeleteItem]   = useState(null)
+  const [isAdding, setIsAdding]       = useState(false)
+  const [deleting, setDeleting]       = useState(false)
+  const [showTemplates, setShowTemplates] = useState(false)
 
   const handleDelete = async () => {
     setDeleting(true)
@@ -265,9 +462,19 @@ export function FixedExpenses({ month, year }) {
           </svg>
           Gastos Fijos
         </h2>
-        <button className={styles['fixed__add-btn']} onClick={startAdd} aria-label="Añadir gasto fijo" title="Añadir">
-          <PlusIcon />
-        </button>
+        <div className={styles['fixed__header-actions']}>
+          <button
+            className={styles['fixed__tpl-btn']}
+            onClick={() => setShowTemplates(true)}
+            aria-label="Gestionar plantillas por defecto"
+            title="Plantillas por defecto"
+          >
+            <SlidersIcon />
+          </button>
+          <button className={styles['fixed__add-btn']} onClick={startAdd} aria-label="Añadir gasto fijo" title="Añadir">
+            <PlusIcon />
+          </button>
+        </div>
       </div>
 
       {/* ── Cuerpo ──────────────────────────────────────────────────────── */}
@@ -353,6 +560,9 @@ export function FixedExpenses({ month, year }) {
           loading={deleting}
         />
       )}
+
+      {/* ── Panel de plantillas ──────────────────────────────────────────── */}
+      {showTemplates && <TemplatesModal onClose={() => setShowTemplates(false)} />}
     </section>
   )
 }

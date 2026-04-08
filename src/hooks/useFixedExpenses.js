@@ -21,13 +21,39 @@ export function useFixedExpenses(month, year) {
     setError(null)
     try {
       const data = await db.fixedExpenses.list(token, month, year)
+
+      // Auto-seed desde plantillas la primera vez que se abre un mes vacío
+      const seedKey = userId ? `cashia_seeded_${userId}_${year}_${month}` : null
+      if (data.length === 0 && seedKey && !localStorage.getItem(seedKey)) {
+        // Marcar como visitado antes de cualquier fetch para evitar race conditions
+        localStorage.setItem(seedKey, '1')
+        const templates = await db.templates.list(token)
+        if (templates && templates.length > 0) {
+          const batch = templates.map(t => ({
+            user_id:     userId,
+            name:        t.name,
+            amount:      t.amount,
+            due_day:     t.due_day,
+            paid:        false,
+            month,
+            year,
+            template_id: t.id,
+          }))
+          const seeded = await db.fixedExpenses.createBatch(token, batch)
+          setItems(seeded ?? [])
+          return
+        }
+      } else if (data.length > 0 && seedKey) {
+        localStorage.setItem(seedKey, '1')
+      }
+
       setItems(data ?? [])
     } catch (e) {
       setError(e.message)
     } finally {
       setLoading(false)
     }
-  }, [token, month, year])
+  }, [token, userId, month, year])
 
   useEffect(() => { load() }, [load])
 

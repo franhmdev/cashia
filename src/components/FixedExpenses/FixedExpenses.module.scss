@@ -388,3 +388,140 @@ $cols: 28px 1fr 72px 108px 64px;
 
 @keyframes fade-in  { from { opacity: 0; }                       to { opacity: 1; } }
 @keyframes scale-in { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+// ─── Acciones en cabecera (botones tpl + add) ─────────────────────────────────
+.fixed {
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &__tpl-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-primary);
+    display: grid;
+    place-items: center;
+    @include t.transition((background-color, border-color), fast);
+
+    &:hover {
+      background: rgba(124, 58, 237, 0.08);
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+// ─── Panel deslizante de plantillas ───────────────────────────────────────────
+$tpl-cols: 1fr 72px 108px 64px;
+
+.tpl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  z-index: 400;
+  animation: fade-in 0.18s ease;
+}
+
+.tpl-panel {
+  width: min(480px, 95vw);
+  background: var(--color-bg-card);
+  box-shadow: -4px 0 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slide-in-right 0.22s ease;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    flex: 1;
+
+    svg { color: var(--color-primary); }
+  }
+
+  &__close {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    display: grid;
+    place-items: center;
+    color: var(--color-text-muted);
+    @include t.transition((background-color, color), fast);
+
+    &:hover { background: #fef2f2; color: var(--color-error); }
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+// ─── Cabecera de columnas para plantillas ─────────────────────────────────────
+.tpl-cols {
+  display: grid;
+  grid-template-columns: #{$tpl-cols};
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+
+  span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &:nth-child(2) { text-align: center; }
+    &:nth-child(3) { text-align: right;  }
+  }
+}
+
+// ─── Fila de plantilla ─────────────────────────────────────────────────────────
+.tpl-row {
+  display: grid;
+  grid-template-columns: #{$tpl-cols};
+  align-items: center;
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  @include t.transition((background-color), fast);
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: #fafafe; }
+
+  &--editing {
+    background: #fafafe;
+    column-gap: var(--space-2);
+    padding-block: var(--space-2);
+  }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}

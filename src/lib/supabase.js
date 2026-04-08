@@ -91,9 +91,48 @@ export const db = {
       ),
     create: (token, payload) =>
       dbRequest('/fixed_expenses', { token, method: 'POST', body: payload }),
+    createBatch: (token, payloads) =>
+      dbRequest('/fixed_expenses', { token, method: 'POST', body: payloads }),
     update: (token, id, payload) =>
       dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
     remove: (token, id) =>
       dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'DELETE' }),
+    // Propagar cambios de plantilla a meses futuros
+    updateByTemplate: (token, templateId, payload, afterMonth, afterYear) =>
+      dbRequest(
+        `/fixed_expenses?template_id=eq.${templateId}&or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))`,
+        { token, method: 'PATCH', body: payload }
+      ),
+    removeByTemplate: (token, templateId, afterMonth, afterYear) =>
+      dbRequest(
+        `/fixed_expenses?template_id=eq.${templateId}&or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))`,
+        { token, method: 'DELETE' }
+      ),
+    // Verificar si un mes ya fue inicializado
+    countForMonth: (token, month, year) =>
+      dbRequest(
+        `/fixed_expenses?month=eq.${month}&year=eq.${year}&select=id`,
+        { token }
+      ),
+    // Obtener todos los registros en meses futuros (para propagar nuevas plantillas)
+    listFutureMonths: (token, afterMonth, afterYear) =>
+      dbRequest(
+        `/fixed_expenses?or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))&select=month,year`,
+        { token }
+      ),
+  },
+
+  templates: {
+    list: (token) =>
+      dbRequest(
+        `/fixed_expense_templates?order=due_day.asc.nullslast,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/fixed_expense_templates', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/fixed_expense_templates?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/fixed_expense_templates?id=eq.${id}`, { token, method: 'DELETE' }),
   },
 }
