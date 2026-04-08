@@ -1,0 +1,23 @@
+// =============================================================================
+// TOOLS » Functions
+// =============================================================================
+@use 'sass:map';
+@use '../settings' as s;
+
+/// Convierte px a rem usando base 16px
+/// @param {Number} $px - valor en px (sin unidad)
+/// @return {Number} valor en rem
+@function rem($px) {
+  @return calc($px / 16) * 1rem;
+}
+
+/// Retorna un valor del mapa de espaciado
+/// @param {Number} $key - clave del mapa (1, 2, 3…)
+/// @return {Number} valor en rem
+@function space($key) {
+  @if map.has-key(s.$spacing-scale, $key) {
+    @return map.get(s.$spacing-scale, $key);
+  }
+  @warn 'space(#{$key}) no existe en $spacing-scale.';
+  @return null;
+}

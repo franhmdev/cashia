@@ -1,0 +1,10 @@
+// =============================================================================
+// OBJECTS » Wrapper  (.o-wrapper)
+// Columna flex que ocupa toda la altura disponible de la viewport.
+// =============================================================================
+
+.o-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}

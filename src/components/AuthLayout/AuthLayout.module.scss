@@ -1,0 +1,125 @@
+// =============================================================================
+// COMPONENT » AuthLayout  (.auth-page / .auth-layout)
+//
+// BEM:
+//   .auth-page               — página background (gris)
+//   .auth-layout             — card contenedor (flex row)
+//   .auth-layout__form       — panel izquierdo blanco
+//   .auth-layout__visual     — panel derecho (gradiente púrpura)
+//   .auth-illustration       — SVG full panel
+//   .auth-illustration__scan — línea de escaneo animada
+// =============================================================================
+@use '../../styles/settings' as s;
+
+// Colores locales auth (anulados como CSS custom props en el panel)
+$auth-primary:   #7c3aed;
+$auth-dark:      #6d28d9;
+$auth-grad-from: #a855f7;
+$auth-grad-to:   #6d28d9;
+
+// ─── Página ───────────────────────────────────────────────────────────────────
+.auth-page {
+  min-height: 100dvh;
+  background: #{s.$color-auth-page-bg};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+// ─── Card contenedor ─────────────────────────────────────────────────────────
+.auth-layout {
+  display: flex;
+  width: 100%;
+  max-width: 980px;
+  min-height: 560px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.14),
+    0 4px 16px  rgba(0, 0, 0, 0.08);
+
+  // ── Panel formulario ────────────────────────────────────────────────────
+  &__form {
+    flex: 0 0 44%;
+    background: #ffffff;
+    padding: 44px 52px;
+    display: flex;
+    flex-direction: column;
+
+    // Sobreescribe colores primarios con la paleta auth (purple)
+    --color-primary:      #{$auth-primary};
+    --color-primary-dark: #{$auth-dark};
+  }
+
+  // ── Panel visual (ilustración) ──────────────────────────────────────────
+  &__visual {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      #{s.$color-auth-grad-from} 0%,
+      #{s.$color-auth-grad-mid}  55%,
+      #{s.$color-auth-grad-to}   100%
+    );
+    overflow: hidden;
+    min-height: 460px;
+  }
+}
+
+// ─── SVG Ilustración ──────────────────────────────────────────────────────────
+.auth-illustration {
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 12px;
+
+  // Línea de escaneo animada (fingerprint)
+  &__scan {
+    animation: fp-scan 3s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center top;
+  }
+}
+
+@keyframes fp-scan {
+  0%   { transform: translateY(-80px); opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.9; }
+  100% { transform: translateY(80px);  opacity: 0; }
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .auth-layout {
+    flex-direction: column;
+    max-width: 480px;
+    min-height: unset;
+    border-radius: 20px;
+
+    &__form {
+      flex: none;
+      padding: 40px 32px;
+    }
+
+    &__visual {
+      min-height: 280px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .auth-layout {
+    border-radius: 0;
+    min-height: 100dvh;
+
+    &__form {
+      padding: 36px 24px;
+    }
+  }
+}

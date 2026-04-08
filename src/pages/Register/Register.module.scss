@@ -1,0 +1,169 @@
+// =============================================================================
+// PAGE » Register  (.register)
+// Misma estructura que .login, extendida con campo name, confirm password
+// y el indicador de fortaleza.
+// =============================================================================
+
+$auth-primary: #7c3aed;
+$auth-dark:    #6d28d9;
+
+.register {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  // ── Brand ──────────────────────────────────────────────────────────────────
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &-icon {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: $auth-primary;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    &-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+  }
+
+  // ── Encabezado ─────────────────────────────────────────────────────────────
+
+  &__header {
+    margin-top: 28px;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  // ── Formulario ─────────────────────────────────────────────────────────────
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &:focus {
+      border-color: $auth-primary;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
+    }
+
+    &--error {
+      border-color: #ef4444;
+
+      &:focus {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+      }
+    }
+
+    &--valid {
+      border-color: #22c55e;
+
+      &:focus {
+        border-color: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+      }
+    }
+  }
+
+  &__pwd-wrap {
+    position: relative;
+
+    .register__input {
+      padding-right: 48px;
+    }
+  }
+
+  &__pwd-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: #475569;
+    }
+  }
+
+  &__field-error {
+    font-size: 0.75rem;
+    color: #ef4444;
+    padding-left: 4px;
+  }
+
+  // ── Botón submit ───────────────────────────────────────────────────────────
+
+  &__submit {
+    width: 100% !important;
+    margin-top: 4px;
+    justify-content: center;
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────────
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 24px;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  &__login-link {
+    color: $auth-primary;
+    font-weight: 600;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: $auth-dark;
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+// =============================================================================
+// GENERIC » Custom Properties
+// Genera las CSS custom properties a partir de las variables de settings.
+// Aquí viven los tokens de diseño disponibles en runtime (dark mode, etc.)
+// =============================================================================
+@use '../settings' as s;
+
+:root {
+  // Colores
+  --color-primary:      #{s.$color-primary};
+  --color-primary-dark: #{s.$color-primary-dark};
+  --color-accent:       #{s.$color-accent};
+  --color-success:      #{s.$color-success};
+  --color-warning:      #{s.$color-warning};
+  --color-error:        #{s.$color-error};
+
+  // Superficies (tema claro por defecto)
+  --color-bg:           #{s.$color-bg-light};
+  --color-bg-card:      #{s.$color-bg-card-light};
+  --color-surface:      #{s.$color-surface-light};
+  --color-text:         #{s.$color-text-light};
+  --color-text-muted:   #{s.$color-text-muted-light};
+  --color-border:       #{s.$color-border-light};
+
+  // Tipografía
+  --font-sans: #{s.$font-sans};
+  --font-mono: #{s.$font-mono};
+
+  // Escala tipográfica
+  --text-xs:   #{s.$text-xs};
+  --text-sm:   #{s.$text-sm};
+  --text-base: #{s.$text-base};
+  --text-lg:   #{s.$text-lg};
+  --text-xl:   #{s.$text-xl};
+  --text-2xl:  #{s.$text-2xl};
+  --text-3xl:  #{s.$text-3xl};
+  --text-4xl:  #{s.$text-4xl};
+
+  // Espaciado
+  --space-1:  #{s.$space-1};
+  --space-2:  #{s.$space-2};
+  --space-3:  #{s.$space-3};
+  --space-4:  #{s.$space-4};
+  --space-5:  #{s.$space-5};
+  --space-6:  #{s.$space-6};
+  --space-8:  #{s.$space-8};
+  --space-10: #{s.$space-10};
+  --space-12: #{s.$space-12};
+  --space-16: #{s.$space-16};
+
+  // Bordes y radio
+  --radius-sm:   #{s.$radius-sm};
+  --radius:      #{s.$radius};
+  --radius-lg:   #{s.$radius-lg};
+  --radius-xl:   #{s.$radius-xl};
+  --radius-full: #{s.$radius-full};
+
+  // Sombras
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
+  --shadow:    0 2px 8px rgb(0 0 0 / 10%);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 14%);
+
+  // Transiciones
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+// Tema oscuro — solo sobreescribe las custom props de superficie
+[data-theme='dark'] {
+  --color-bg:         #{s.$color-bg-dark};
+  --color-bg-card:    #{s.$color-bg-card-dark};
+  --color-surface:    #{s.$color-surface-dark};
+  --color-text:       #{s.$color-text-dark};
+  --color-text-muted: #{s.$color-text-muted-dark};
+  --color-border:     #{s.$color-border-dark};
+}

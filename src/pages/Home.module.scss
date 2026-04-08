@@ -1,0 +1,40 @@
+// =============================================================================
+// COMPONENT » Hero  (.hero)  — página Home
+//
+// BEM:
+//   .hero             — bloque
+//   .hero__title      — título principal
+//   .hero__highlight  — texto resaltado dentro del título
+//   .hero__subtitle   — subtítulo descriptivo
+//   .hero__actions    — grupo de CTAs
+// =============================================================================
+@use '../styles/tools' as t;
+
+.hero {
+  @include t.flex-col(center);
+  text-align: center;
+  gap: var(--space-6);
+  padding-block: var(--space-16);
+
+  &__title {
+    font-size: clamp(var(--text-3xl), 6vw, var(--text-4xl));
+    letter-spacing: -1px;
+  }
+
+  &__highlight {
+    color: var(--color-primary);
+  }
+
+  &__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 520px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

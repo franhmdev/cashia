@@ -1,0 +1,19 @@
+// =============================================================================
+// UTILITIES » Visibility  (.u-sr-only, .u-hidden, .u-visible)
+// =============================================================================
+@use '../tools' as t;
+
+// Solo visible para lectores de pantalla
+.u-sr-only {
+  @include t.visually-hidden;
+}
+
+// Oculto para todos (incluye lectores de pantalla)
+.u-hidden {
+  display: none !important;
+}
+
+// Forzar visibilidad
+.u-visible {
+  visibility: visible !important;
+}

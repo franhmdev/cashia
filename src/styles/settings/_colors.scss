@@ -1,0 +1,40 @@
+// =============================================================================
+// SETTINGS » Colors
+// Valores de color como variables SCSS. Las CSS custom props se generan
+// en generic/_custom-props.scss para permitir theming en runtime.
+// =============================================================================
+
+// Marca
+$color-primary:      #38bdf8;
+$color-primary-dark: #0ea5e9;
+$color-accent:       #818cf8;
+
+// Semánticos
+$color-success: #22c55e;
+$color-warning: #f59e0b;
+$color-error:   #ef4444;
+
+// Tema claro
+$color-bg-light:      #f8fafc;
+$color-bg-card-light: #ffffff;
+$color-surface-light: #f1f5f9;
+$color-text-light:    #0f172a;
+$color-text-muted-light: #64748b;
+$color-border-light:  #e2e8f0;
+
+// Tema oscuro
+$color-bg-dark:       #0f172a;
+
+// ─── Paleta auth (purple) ─────────────────────────────────────────────────────
+$color-auth-primary:      #7c3aed; // violet-600
+$color-auth-primary-dark: #6d28d9; // violet-700
+$color-auth-grad-from:    #a855f7; // purple-500
+$color-auth-grad-mid:     #7c3aed; // violet-600
+$color-auth-grad-to:      #6d28d9; // violet-700
+$color-auth-light:        #ddd6fe; // violet-200
+$color-auth-page-bg:      #e2e8f0; // slate-200
+$color-bg-card-dark:  #1e293b;
+$color-surface-dark:  #1e293b;
+$color-text-dark:     #f1f5f9;
+$color-text-muted-dark: #94a3b8;
+$color-border-dark:   #334155;

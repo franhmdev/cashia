@@ -1,0 +1,34 @@
+// =============================================================================
+// MAIN — Punto de entrada ITCSS
+//
+// La arquitectura ITCSS ordena las capas del triángulo invertido:
+// de lo más genérico (menor especificidad) a lo más específico.
+//
+//  [1] Settings   — Variables SCSS, sin output CSS
+//  [2] Tools      — Mixins y funciones, sin output CSS
+//  [3] Generic    — Reset, box-sizing y CSS custom properties
+//  [4] Elements   — Estilos de elementos HTML desnudos
+//  [5] Objects    — Patrones de layout sin cosmética (.o-)
+//  [6] Utilities  — Clases de utilidad de alta especificidad (.u-)
+//
+// Los componentes (.c-) viven en sus propios .module.scss y no se
+// importan aquí — CSS Modules los encapsula automáticamente.
+// =============================================================================
+
+// [1] Settings
+@use 'settings' as s; // Necesario para que tools pueda @use settings
+
+// [2] Tools
+@use 'tools' as t;    // Necesario para que utilities pueda @use tools
+
+// [3] Generic
+@use 'generic';
+
+// [4] Elements
+@use 'elements';
+
+// [5] Objects
+@use 'objects';
+
+// [6] Utilities
+@use 'utilities';

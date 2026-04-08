@@ -1,0 +1,28 @@
+# Dependencias
+node_modules/
+
+# Build
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos CSS compilados/obsoletos (el proyecto usa SCSS)
+**/*.module.css
+**/*.module.css.map
+src/styles/main.css
+src/styles/main.css.map

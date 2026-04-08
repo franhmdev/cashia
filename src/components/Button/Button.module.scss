@@ -1,0 +1,95 @@
+// =============================================================================
+// COMPONENT » Button  (.btn)
+//
+// BEM:
+//   .btn                   — bloque base
+//   .btn--sm / --md / --lg — modificadores de tamaño
+//   .btn--primary / …      — modificadores de variante
+//   .btn--loading          — estado de carga
+//   .btn__spinner          — elemento spinner interno
+// =============================================================================
+@use '../../styles/tools' as t;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  border-radius: var(--radius);
+  white-space: nowrap;
+  user-select: none;
+  @include t.transition((background-color, color, box-shadow, opacity), fast);
+
+  // ── Tamaños ────────────────────────────────────────────────────────────────
+
+  &--sm { padding: var(--space-1) var(--space-3); font-size: var(--text-sm); }
+  &--md { padding: var(--space-2) var(--space-5); font-size: var(--text-base); }
+  &--lg { padding: var(--space-3) var(--space-8); font-size: var(--text-lg); }
+
+  // ── Variantes ──────────────────────────────────────────────────────────────
+
+  &--primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-dark);
+      box-shadow: var(--shadow);
+    }
+  }
+
+  &--secondary {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-border);
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-surface);
+    }
+  }
+
+  &--danger {
+    background-color: var(--color-error);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      opacity: 0.88;
+    }
+  }
+
+  // ── Estado ─────────────────────────────────────────────────────────────────
+
+  &--loading {
+    pointer-events: none;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  // ── Elementos ──────────────────────────────────────────────────────────────
+
+  &__spinner {
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+  }
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,241 @@
+// =============================================================================
+// PAGE » Login  (.login)
+//
+// BEM:
+//   .login                  — bloque raíz
+//   .login__brand           — logo marca
+//   .login__brand-icon      — cuadradito morado
+//   .login__brand-name      — texto "Cashia"
+//   .login__header          — bloque heading
+//   .login__title           — h1
+//   .login__subtitle        — subtítulo
+//   .login__form            — formulario
+//   .login__field           — grupo campo + error
+//   .login__input           — input base
+//   .login__input--error    — estado error
+//   .login__pwd-wrap        — wrapper relativo para toggle
+//   .login__pwd-toggle      — botón ojo
+//   .login__field-error     — mensaje de error
+//   .login__options         — fila remember + forgot
+//   .login__remember        — label checkbox
+//   .login__checkbox        — input type=checkbox custom
+//   .login__forgot          — botón Forgot Password
+//   .login__submit          — botón Sign In (full width)
+//   .login__footer          — footer "¿no tienes cuenta?"
+//   .login__register-link   — enlace Sign Up
+// =============================================================================
+
+$auth-primary:   #7c3aed;
+$auth-dark:      #6d28d9;
+
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  // ── Brand ──────────────────────────────────────────────────────────────────
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &-icon {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: $auth-primary;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    &-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+  }
+
+  // ── Encabezado ─────────────────────────────────────────────────────────────
+
+  &__header {
+    margin-top: 40px;
+    margin-bottom: 28px;
+  }
+
+  &__title {
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  // ── Formulario ─────────────────────────────────────────────────────────────
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &:focus {
+      border-color: $auth-primary;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
+    }
+
+    &--error {
+      border-color: #ef4444;
+
+      &:focus {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+      }
+    }
+  }
+
+  // Wrapper del input de contraseña para posicionar el toggle
+  &__pwd-wrap {
+    position: relative;
+
+    .login__input {
+      padding-right: 48px;
+    }
+  }
+
+  &__pwd-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: #475569;
+    }
+  }
+
+  &__field-error {
+    font-size: 0.75rem;
+    color: #ef4444;
+    padding-left: 4px;
+  }
+
+  // ── Opciones (remember + forgot) ───────────────────────────────────────────
+
+  &__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  &__checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 2px solid #cbd5e1;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 150ms ease, border-color 150ms ease;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 11px;
+
+    &:checked {
+      background-color: $auth-primary;
+      border-color: $auth-primary;
+      // Checkmark SVG inline
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='3,8 7,12 13,4' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    &:focus-visible {
+      outline: 2px solid $auth-primary;
+      outline-offset: 2px;
+    }
+  }
+
+  &__forgot {
+    font-size: 0.875rem;
+    color: $auth-primary;
+    transition: color 150ms ease;
+    white-space: nowrap;
+
+    &:hover {
+      color: $auth-dark;
+      text-decoration: underline;
+    }
+  }
+
+  // ── Botón submit ───────────────────────────────────────────────────────────
+
+  &__submit {
+    width: 100% !important;
+    margin-top: 4px;
+    justify-content: center;
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────────
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 32px;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  &__register-link {
+    color: $auth-primary;
+    font-weight: 600;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: $auth-dark;
+      text-decoration: underline;
+    }
+  }
+}

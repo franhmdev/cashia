@@ -1,0 +1,16 @@
+// =============================================================================
+// UTILITIES » Text  (.u-text-*)
+// =============================================================================
+
+.u-text-primary  { color: var(--color-primary) !important; }
+.u-text-muted    { color: var(--color-text-muted) !important; }
+.u-text-error    { color: var(--color-error) !important; }
+.u-text-success  { color: var(--color-success) !important; }
+
+.u-text-center { text-align: center !important; }
+.u-text-left   { text-align: left !important; }
+.u-text-right  { text-align: right !important; }
+
+.u-font-bold   { font-weight: 700 !important; }
+.u-font-medium { font-weight: 500 !important; }
+.u-font-normal { font-weight: 400 !important; }

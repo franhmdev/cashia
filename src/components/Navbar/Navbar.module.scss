@@ -1,0 +1,88 @@
+// =============================================================================
+// COMPONENT » Navbar  (.navbar)
+//
+// BEM:
+//   .navbar                    — bloque (header sticky)
+//   .navbar__inner             — contenedor interno
+//   .navbar__brand             — logotipo / nombre
+//   .navbar__links             — lista de enlaces
+//   .navbar__link              — enlace individual
+//   .navbar__link.is-active    — estado activo (BEMIT state)
+//   .navbar__theme-toggle      — botón de tema
+// =============================================================================
+@use '../../styles/tools' as t;
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(8px);
+
+  // ── Elementos ──────────────────────────────────────────────────────────────
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: 60px;
+  }
+
+  &__brand {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--color-primary);
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+    @include t.transition((color), fast);
+
+    &:hover {
+      color: var(--color-primary-dark);
+    }
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  &__link {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    @include t.transition((color, background-color), fast);
+
+    &:hover,
+    &.is-active {
+      color: var(--color-text);
+      background-color: var(--color-surface);
+    }
+
+    // Estado activo BEMIT
+    &.is-active {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+  }
+
+  &__theme-toggle {
+    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    font-size: var(--text-base);
+    @include t.transition((background-color), fast);
+
+    &:hover {
+      background-color: var(--color-surface);
+    }
+  }
+}
