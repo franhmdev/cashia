@@ -1,4 +1,4 @@
-// =============================================================================
+﻿// =============================================================================
 // COMPONENT » FixedExpenses
 // BEM:
 //   .fixed                      — tarjeta contenedor
@@ -17,6 +17,8 @@
 
 // Columnas de cada fila: checkbox | nombre | día | importe | acciones
 $cols: 28px 1fr 72px 108px 64px;
+$fe-surface: #f8f8ff;   // fondo de cabecera / pie — neutro casi blanco
+$fe-border:  #eeedf8;   // borde de filas — neutro ligero
 
 // ─── Tarjeta ──────────────────────────────────────────────────────────────────
 .fixed {
@@ -32,8 +34,8 @@ $cols: 28px 1fr 72px 108px 64px;
     align-items: center;
     justify-content: space-between;
     padding: var(--space-4) var(--space-6);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    background: $fe-surface;
+    border-bottom: 1px solid $fe-border;
   }
 
   &__title {
@@ -71,8 +73,8 @@ $cols: 28px 1fr 72px 108px 64px;
     grid-template-columns: #{$cols};
     align-items: center;
     padding: var(--space-2) var(--space-6);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    background: $fe-surface;
+    border-bottom: 1px solid $fe-border;
 
     span {
       font-size: 11px;
@@ -118,8 +120,8 @@ $cols: 28px 1fr 72px 108px 64px;
     justify-content: flex-end;
     gap: var(--space-8);
     padding: var(--space-4) var(--space-6);
-    border-top: 2px solid var(--color-border);
-    background: var(--color-surface);
+    border-top: 2px solid $fe-border;
+    background: $fe-surface;
   }
 
   &__total-block {
@@ -155,7 +157,7 @@ $cols: 28px 1fr 72px 108px 64px;
   grid-template-columns: #{$cols};
   align-items: center;
   padding: var(--space-3) var(--space-6);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid $fe-border;
   @include t.transition((background-color), fast);
 
   &:last-child { border-bottom: none; }
@@ -445,7 +447,7 @@ $tpl-cols: 1fr 72px 108px 64px;
     gap: var(--space-2);
     padding: var(--space-4) var(--space-5);
     background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid $fe-border;
     flex-shrink: 0;
   }
 
@@ -488,7 +490,7 @@ $tpl-cols: 1fr 72px 108px 64px;
   align-items: center;
   padding: var(--space-2) var(--space-5);
   background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid $fe-border;
 
   span {
     font-size: 11px;
@@ -508,7 +510,7 @@ $tpl-cols: 1fr 72px 108px 64px;
   grid-template-columns: #{$tpl-cols};
   align-items: center;
   padding: var(--space-3) var(--space-5);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid $fe-border;
   @include t.transition((background-color), fast);
 
   &:last-child { border-bottom: none; }
