@@ -527,3 +527,29 @@ $tpl-cols: 1fr 72px 108px 64px;
   from { transform: translateX(100%); }
   to   { transform: translateX(0); }
 }
+
+// ─── Mobile: ocultar columna Día ─────────────────────────────────────────────
+@include t.mq-down('md') {
+  $cols-mobile: 28px 1fr 108px 64px;
+  $tpl-cols-mobile: 1fr 108px 64px;
+
+  .fixed__cols {
+    grid-template-columns: #{$cols-mobile};
+    span:nth-child(3) { display: none; }
+  }
+
+  .expense {
+    grid-template-columns: #{$cols-mobile};
+    &__day { display: none; }
+  }
+
+  .tpl-cols {
+    grid-template-columns: #{$tpl-cols-mobile};
+    span:nth-child(2) { display: none; }
+  }
+
+  .tpl-row {
+    grid-template-columns: #{$tpl-cols-mobile};
+    .expense__day { display: none; }
+  }
+}
