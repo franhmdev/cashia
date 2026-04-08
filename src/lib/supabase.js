@@ -137,4 +137,50 @@ export const db = {
     remove: (token, id) =>
       dbRequest(`/fixed_expense_templates?id=eq.${id}`, { token, method: 'DELETE' }),
   },
+
+  // ── Ingresos fijos ────────────────────────────────────────────────────────
+  fixedIncomes: {
+    list: (token, month, year) =>
+      dbRequest(
+        `/fixed_incomes?month=eq.${month}&year=eq.${year}&order=due_day.asc.nullslast,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/fixed_incomes', { token, method: 'POST', body: payload }),
+    createBatch: (token, payloads) =>
+      dbRequest('/fixed_incomes', { token, method: 'POST', body: payloads }),
+    update: (token, id, payload) =>
+      dbRequest(`/fixed_incomes?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/fixed_incomes?id=eq.${id}`, { token, method: 'DELETE' }),
+    updateByTemplate: (token, templateId, payload, afterMonth, afterYear) =>
+      Promise.all([
+        dbRequest(`/fixed_incomes?template_id=eq.${templateId}&year=gt.${afterYear}`, { token, method: 'PATCH', body: payload }),
+        dbRequest(`/fixed_incomes?template_id=eq.${templateId}&year=eq.${afterYear}&month=gt.${afterMonth}`, { token, method: 'PATCH', body: payload }),
+      ]),
+    removeByTemplate: (token, templateId, afterMonth, afterYear) =>
+      Promise.all([
+        dbRequest(`/fixed_incomes?template_id=eq.${templateId}&year=gt.${afterYear}`, { token, method: 'DELETE' }),
+        dbRequest(`/fixed_incomes?template_id=eq.${templateId}&year=eq.${afterYear}&month=gt.${afterMonth}`, { token, method: 'DELETE' }),
+      ]),
+    listFutureMonths: (token, afterMonth, afterYear) =>
+      Promise.all([
+        dbRequest(`/fixed_incomes?year=gt.${afterYear}&select=month,year`, { token }),
+        dbRequest(`/fixed_incomes?year=eq.${afterYear}&month=gt.${afterMonth}&select=month,year`, { token }),
+      ]).then(([a, b]) => [...(a ?? []), ...(b ?? [])]),
+  },
+
+  incomeTemplates: {
+    list: (token) =>
+      dbRequest(
+        `/fixed_income_templates?order=due_day.asc.nullslast,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/fixed_income_templates', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/fixed_income_templates?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/fixed_income_templates?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
 }
