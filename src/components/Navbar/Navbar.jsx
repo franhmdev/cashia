@@ -3,11 +3,6 @@ import { Link } from '@/router'
 import { useAuth } from '@/hooks/useAuth'
 import styles from './Navbar.module.scss'
 
-const NAV_LINKS = [
-  { to: '/home',  label: 'Inicio' },
-  { to: '/about', label: 'Acerca' },
-]
-
 function getInitials(user) {
   const name = user?.user_metadata?.name || user?.email || '?'
   return name
@@ -18,12 +13,11 @@ function getInitials(user) {
 }
 
 export function Navbar() {
-  const { logout, user }    = useAuth()
-  const [open, setOpen]     = useState(false)
-  const menuRef             = useRef(null)
-  const avatarUrl           = user?.user_metadata?.avatar_url
+  const { logout, user }  = useAuth()
+  const [open, setOpen]   = useState(false)
+  const menuRef           = useRef(null)
+  const avatarUrl         = user?.user_metadata?.avatar_url
 
-  // Cierra el menú al hacer clic fuera
   useEffect(() => {
     if (!open) return
     const handler = (e) => {
@@ -39,14 +33,6 @@ export function Navbar() {
         <Link to="/home" className={styles['navbar__brand']}>
           Cashia
         </Link>
-
-        <ul className={styles['navbar__links']} role="list">
-          {NAV_LINKS.map(({ to, label }) => (
-            <li key={to}>
-              <Link to={to} className={styles['navbar__link']}>{label}</Link>
-            </li>
-          ))}
-        </ul>
 
         {user && (
           <div className={styles['navbar__user']} ref={menuRef}>
@@ -92,3 +78,4 @@ export function Navbar() {
     </header>
   )
 }
+
