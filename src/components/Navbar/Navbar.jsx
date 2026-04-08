@@ -1,5 +1,6 @@
 import { Link } from '@/router'
 import { useTheme } from '@/hooks/useTheme'
+import { useAuth } from '@/hooks/useAuth'
 import styles from './Navbar.module.scss'
 
 const NAV_LINKS = [
@@ -9,11 +10,12 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const { isDark, toggle } = useTheme()
+  const { logout, user }   = useAuth()
 
   return (
     <header className={styles.navbar}>
       <nav className={`${styles['navbar__inner']} o-container`} aria-label="Navegación principal">
-        <Link to="/" className={styles['navbar__brand']}>
+        <Link to="/home" className={styles['navbar__brand']}>
           Cashia
         </Link>
 
@@ -33,6 +35,16 @@ export function Navbar() {
         >
           {isDark ? '☀️' : '🌙'}
         </button>
+
+        {user && (
+          <button
+            className={styles['navbar__logout']}
+            onClick={logout}
+            title={`Cerrar sesión (${user.email})`}
+          >
+            Salir
+          </button>
+        )}
       </nav>
     </header>
   )

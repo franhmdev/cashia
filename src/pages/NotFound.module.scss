@@ -14,12 +14,18 @@
   text-align: center;
   gap: var(--space-4);
   padding-block: var(--space-16);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  padding-inline: var(--space-8);
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+  border: 1px solid var(--color-border);
 
   &__code {
     font-size: 6rem;
     font-weight: 800;
-    color: var(--color-border);
+    color: var(--color-primary);
     line-height: 1;
+    opacity: 0.25;
   }
 
   &__title {

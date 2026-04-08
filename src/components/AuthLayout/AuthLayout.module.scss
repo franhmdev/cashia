@@ -47,9 +47,7 @@ $auth-grad-to:   #6d28d9;
     display: flex;
     flex-direction: column;
 
-    // Sobreescribe colores primarios con la paleta auth (purple)
-    --color-primary:      #{$auth-primary};
-    --color-primary-dark: #{$auth-dark};
+    // Primary ya es violet a nivel global — sin override necesario
   }
 
   // ── Panel visual (ilustración) ──────────────────────────────────────────
