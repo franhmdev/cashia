@@ -341,7 +341,7 @@ function TemplatesModal({ onClose }) {
       onMouseDown={handleOverlayMouseDown}
       role="dialog"
       aria-modal="true"
-      aria-label="Plantillas por defecto"
+      aria-label="Gastos fijos por defecto"
     >
       <div className={styles['tpl-panel']}>
 
@@ -349,7 +349,7 @@ function TemplatesModal({ onClose }) {
         <div className={styles['tpl-panel__header']}>
           <h3 className={styles['tpl-panel__title']}>
             <SlidersIcon />
-            Plantillas por defecto
+            Gastos fijos por defecto
           </h3>
           <button
             className={styles['fixed__add-btn']}
@@ -466,8 +466,8 @@ export function FixedExpenses({ month, year }) {
           <button
             className={styles['fixed__tpl-btn']}
             onClick={() => setShowTemplates(true)}
-            aria-label="Gestionar plantillas por defecto"
-            title="Plantillas por defecto"
+            aria-label="Gestionar gastos fijos por defecto"
+            title="Gastos fijos por defecto"
           >
             <SlidersIcon />
           </button>

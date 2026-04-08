@@ -23,12 +23,14 @@ export function useFixedExpenses(month, year) {
       const data = await db.fixedExpenses.list(token, month, year)
 
       // Auto-seed desde plantillas la primera vez que se abre un mes vacío
+      // La clave solo se marca cuando ya hay plantillas y se ha sembrado,
+      // o cuando el mes ya tiene datos propios. Nunca antes, para permitir
+      // que meses visitados sin plantillas se vuelvan a intentar sembrar.
       const seedKey = userId ? `cashia_seeded_${userId}_${year}_${month}` : null
       if (data.length === 0 && seedKey && !localStorage.getItem(seedKey)) {
-        // Marcar como visitado antes de cualquier fetch para evitar race conditions
-        localStorage.setItem(seedKey, '1')
         const templates = await db.templates.list(token)
         if (templates && templates.length > 0) {
+          localStorage.setItem(seedKey, '1')
           const batch = templates.map(t => ({
             user_id:     userId,
             name:        t.name,
@@ -43,6 +45,7 @@ export function useFixedExpenses(month, year) {
           setItems(seeded ?? [])
           return
         }
+        // Sin plantillas: no marcar — se reintentará en la próxima visita
       } else if (data.length > 0 && seedKey) {
         localStorage.setItem(seedKey, '1')
       }
