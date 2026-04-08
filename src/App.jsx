@@ -1,4 +1,5 @@
 import { RouterProvider, Routes, Route, Redirect } from '@/router'
+import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { Layout } from '@/components/Layout/Layout'
 import Home     from '@/pages/Home'
 import About    from '@/pages/About'
@@ -6,27 +7,36 @@ import Login    from '@/pages/Login/Login'
 import Register from '@/pages/Register/Register'
 import NotFound from '@/pages/NotFound'
 
-// Páginas que usan el layout principal (Navbar + Footer)
-function HomePage()     { return <Layout><Home /></Layout> }
-function AboutPage()    { return <Layout><About /></Layout> }
+// ─── Ruta protegida — redirige a /login si no hay sesión ─────────────────────
+function PrivateRoute({ children }) {
+  const { isAuthenticated } = useAuth()
+  if (!isAuthenticated) return <Redirect to="/login" />
+  return children
+}
+
+// ─── Páginas con layout ───────────────────────────────────────────────────────
+function HomePage()     { return <PrivateRoute><Layout><Home /></Layout></PrivateRoute> }
+function AboutPage()    { return <PrivateRoute><Layout><About /></Layout></PrivateRoute> }
 function NotFoundPage() { return <Layout><NotFound /></Layout> }
 
 export default function App() {
   return (
-    <RouterProvider>
-      <Routes>
-        {/* Auth — layout propio (split panel, sin Navbar) */}
-        <Route path="/login"    component={Login} />
-        <Route path="/register" component={Register} />
+    <AuthProvider>
+      <RouterProvider>
+        <Routes>
+          {/* Auth — layout propio (split panel, sin Navbar) */}
+          <Route path="/login"    component={Login} />
+          <Route path="/register" component={Register} />
 
-        {/* Raíz — redirige a login */}
-        <Route path="/"         component={() => <Redirect to="/login" />} />
+          {/* Raíz — redirige a login */}
+          <Route path="/"         component={() => <Redirect to="/login" />} />
 
-        {/* App — layout principal */}
-        <Route path="/home"      component={HomePage} />
-        <Route path="/about"     component={AboutPage} />
-        <Route path="*"         component={NotFoundPage} />
-      </Routes>
-    </RouterProvider>
+          {/* App — rutas protegidas */}
+          <Route path="/home"     component={HomePage} />
+          <Route path="/about"    component={AboutPage} />
+          <Route path="*"         component={NotFoundPage} />
+        </Routes>
+      </RouterProvider>
+    </AuthProvider>
   )
 }

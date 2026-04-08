@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from '@/router'
+import { useAuth } from '@/hooks/useAuth'
 import { AuthLayout } from '@/components/AuthLayout/AuthLayout'
 import { Button } from '@/components/Button/Button'
 import { PasswordStrength } from '@/components/PasswordStrength/PasswordStrength'
@@ -49,12 +50,15 @@ function validate(form, strength) {
 
 // ─── Página Register ──────────────────────────────────────────────────────────
 export default function Register() {
-  const { navigate } = useRouter()
-  const [form, setForm]         = useState({ name: '', email: '', password: '', confirm: '' })
-  const [errors, setErrors]     = useState({})
-  const [showPwd, setShowPwd]   = useState(false)
-  const [showConf, setShowConf] = useState(false)
-  const [loading, setLoading]   = useState(false)
+  const { navigate }   = useRouter()
+  const { register }   = useAuth()
+  const [form, setForm]               = useState({ name: '', email: '', password: '', confirm: '' })
+  const [errors, setErrors]           = useState({})
+  const [serverError, setServerError] = useState('')
+  const [confirmed, setConfirmed]     = useState(false)
+  const [showPwd, setShowPwd]         = useState(false)
+  const [showConf, setShowConf]       = useState(false)
+  const [loading, setLoading]         = useState(false)
 
   const strength = usePasswordStrength(form.password)
 
@@ -69,12 +73,43 @@ export default function Register() {
     if (Object.keys(err).length) { setErrors(err); return }
 
     setLoading(true)
-    // Simulación de llamada a API (800ms)
-    await new Promise((r) => setTimeout(r, 800))
+    setServerError('')
+    try {
+      const result = await register(form.email, form.password, form.name)
+      if (result.needsConfirmation) {
+        setConfirmed(true)
+      } else {
+        navigate('/home')
+      }
+    } catch (err) {
+      setServerError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-    sessionStorage.setItem('cashia_user', JSON.stringify({ name: form.name, email: form.email }))
-    setLoading(false)
-    navigate('/home')
+  // ── Pantalla de confirmación de email ──────────────────────────────────────
+  if (confirmed) {
+    return (
+      <AuthLayout>
+        <div className={styles['register']}>
+          <div className={styles['register__brand']}>
+            <span className={styles['register__brand-icon']} aria-hidden="true" />
+            <span className={styles['register__brand-name']}>Cashia</span>
+          </div>
+          <div className={styles['register__header']}>
+            <h1 className={styles['register__title']}>Check your<br />email</h1>
+            <p className={styles['register__subtitle']}>
+              We sent a confirmation link to <strong>{form.email}</strong>.<br />
+              Click it to activate your account, then sign in.
+            </p>
+          </div>
+          <Button size="lg" onClick={() => navigate('/login')} className={styles['register__submit']}>
+            Go to Sign In
+          </Button>
+        </div>
+      </AuthLayout>
+    )
   }
 
   return (
@@ -214,6 +249,13 @@ export default function Register() {
               </span>
             )}
           </div>
+
+          {/* Error de servidor */}
+          {serverError && (
+            <p className={styles['register__field-error']} role="alert">
+              {serverError}
+            </p>
+          )}
 
           {/* Submit */}
           <Button

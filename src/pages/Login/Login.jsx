@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from '@/router'
+import { useAuth } from '@/hooks/useAuth'
 import { AuthLayout } from '@/components/AuthLayout/AuthLayout'
 import { Button } from '@/components/Button/Button'
 import styles from './Login.module.scss'
@@ -44,10 +45,12 @@ function validate(form) {
 // ─── Página Login ─────────────────────────────────────────────────────────────
 export default function Login() {
   const { navigate } = useRouter()
-  const [form, setForm]       = useState({ email: '', password: '', remember: false })
-  const [errors, setErrors]   = useState({})
-  const [showPwd, setShowPwd] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const { login }    = useAuth()
+  const [form, setForm]         = useState({ email: '', password: '', remember: false })
+  const [errors, setErrors]     = useState({})
+  const [serverError, setServerError] = useState('')
+  const [showPwd, setShowPwd]   = useState(false)
+  const [loading, setLoading]   = useState(false)
 
   const setField = (field) => (e) => {
     const val = field === 'remember' ? e.target.checked : e.target.value
@@ -61,15 +64,15 @@ export default function Login() {
     if (Object.keys(err).length) { setErrors(err); return }
 
     setLoading(true)
-    // Simulación de llamada a API (800ms)
-    await new Promise((r) => setTimeout(r, 800))
-
-    const user = { email: form.email }
-    const storage = form.remember ? localStorage : sessionStorage
-    storage.setItem('cashia_user', JSON.stringify(user))
-
-    setLoading(false)
-    navigate('/home')
+    setServerError('')
+    try {
+      await login(form.email, form.password, form.remember)
+      navigate('/home')
+    } catch (err) {
+      setServerError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -168,6 +171,13 @@ export default function Login() {
               Forgot Password?
             </button>
           </div>
+
+          {/* Error de servidor */}
+          {serverError && (
+            <p className={styles['login__field-error']} role="alert">
+              {serverError}
+            </p>
+          )}
 
           {/* Submit */}
           <Button
