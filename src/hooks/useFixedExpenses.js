@@ -86,8 +86,14 @@ export function useFixedExpenses(month, year) {
   }, [token])
 
   const toggle = useCallback(async (id, paid) => {
-    const rows = await db.fixedExpenses.update(token, id, { paid })
-    setItems(prev => prev.map(i => (i.id === id ? rows[0] : i)))
+    // Optimistic: actualizar UI inmediatamente, revertir si falla
+    setItems(prev => prev.map(i => (i.id === id ? { ...i, paid } : i)))
+    try {
+      const rows = await db.fixedExpenses.update(token, id, { paid })
+      setItems(prev => prev.map(i => (i.id === id ? rows[0] : i)))
+    } catch {
+      setItems(prev => prev.map(i => (i.id === id ? { ...i, paid: !paid } : i)))
+    }
   }, [token])
 
   const total   = items.reduce((s, i) => s + Number(i.amount), 0)

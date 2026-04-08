@@ -201,6 +201,8 @@ $fe-border:  #eeedf8;   // borde de filas — neutro ligero
     border: 2px solid var(--color-border);
     border-radius: var(--radius-sm);
     background: #fff;
+    display: grid;
+    place-items: center;
     @include t.transition((border-color, background-color), fast);
 
     .expense__checkbox:checked + & {
@@ -209,15 +211,13 @@ $fe-border:  #eeedf8;   // borde de filas — neutro ligero
 
       &::after {
         content: '';
-        position: absolute;
-        top: 2px;
-        left: 5px;
+        display: block;
         width: 5px;
         height: 9px;
         border: 2px solid #fff;
         border-top: none;
         border-left: none;
-        transform: rotate(45deg);
+        transform: rotate(45deg) translate(-1px, -1px);
       }
     }
   }
