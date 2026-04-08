@@ -57,3 +57,43 @@ export function refreshToken(token) {
     body: JSON.stringify({ refresh_token: token }),
   })
 }
+
+// =============================================================================
+// DB » REST API — cliente para tablas de Supabase
+// =============================================================================
+
+async function dbRequest(path, { token, method = 'GET', body, prefer } = {}) {
+  const headers = {
+    ...BASE_HEADERS,
+    Authorization: `Bearer ${token}`,
+    // Representación de vuelta por defecto en escrituras; vacío para DELETE
+    Prefer: prefer !== undefined ? prefer : (method !== 'GET' && method !== 'DELETE' ? 'return=representation' : ''),
+  }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  })
+  const text = await res.text()
+  const data = text ? JSON.parse(text) : null
+  if (!res.ok) {
+    throw new Error(data?.message || data?.error || `HTTP ${res.status}`)
+  }
+  return data
+}
+
+export const db = {
+  fixedExpenses: {
+    list: (token, month, year) =>
+      dbRequest(
+        `/fixed_expenses?month=eq.${month}&year=eq.${year}&order=due_day.asc,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/fixed_expenses', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
+}

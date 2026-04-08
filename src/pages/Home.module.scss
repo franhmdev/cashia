@@ -1,45 +1,60 @@
 // =============================================================================
-// COMPONENT » Hero  (.hero)  — página Home
-//
+// PAGE » Dashboard (Home)
 // BEM:
-//   .hero             — bloque
-//   .hero__title      — título principal
-//   .hero__highlight  — texto resaltado dentro del título
-//   .hero__subtitle   — subtítulo descriptivo
-//   .hero__actions    — grupo de CTAs
+//   .dashboard                  — contenedor principal
+//   .dashboard__greeting        — saludo al usuario
+//   .dashboard__month-nav       — navegador de mes
+//   .dashboard__nav-btn         — botones flecha
+//   .dashboard__month-title     — nombre del mes + año
+//   .dashboard__modules         — área de módulos
 // =============================================================================
 @use '../styles/tools' as t;
 
-.hero {
-  @include t.flex-col(center);
-  text-align: center;
+.dashboard {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-6);
-  padding-block: var(--space-16);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-xl);
-  padding-inline: var(--space-8);
-  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
-  border: 1px solid var(--color-border);
 
-  &__title {
-    font-size: clamp(var(--text-3xl), 6vw, var(--text-4xl));
-    letter-spacing: -1px;
-  }
-
-  &__highlight {
-    color: var(--color-primary);
-  }
-
-  &__subtitle {
-    font-size: var(--text-lg);
+  &__greeting {
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
-    max-width: 520px;
   }
 
-  &__actions {
+  &__month-nav {
     display: flex;
+    align-items: center;
     gap: var(--space-4);
-    flex-wrap: wrap;
-    justify-content: center;
+  }
+
+  &__nav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    display: grid;
+    place-items: center;
+    color: var(--color-primary);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    @include t.transition((background-color, color), fast);
+
+    &:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
+
+  &__month-title {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    min-width: 220px;
+    text-align: center;
+  }
+
+  &__modules {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
   }
 }

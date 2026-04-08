@@ -1,0 +1,390 @@
+// =============================================================================
+// COMPONENT » FixedExpenses
+// BEM:
+//   .fixed                      — tarjeta contenedor
+//   .fixed__header              — cabecera con título y botón +
+//   .fixed__title               — h2 titular
+//   .fixed__add-btn             — botón circular +
+//   .fixed__cols                — fila de cabeceras de columna
+//   .fixed__body                — área de filas
+//   .fixed__footer              — pie con totales
+//   .fixed__total-block         — bloque total / pendiente
+//   .expense                    — fila de gasto (grid)
+//   .expense--paid              — estado pagado
+//   .expense--editing/.adding   — fila en modo edición/adición
+// =============================================================================
+@use '../../styles/tools' as t;
+
+// Columnas de cada fila: checkbox | nombre | día | importe | acciones
+$cols: 28px 1fr 72px 108px 64px;
+
+// ─── Tarjeta ──────────────────────────────────────────────────────────────────
+.fixed {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 16px rgba(124, 58, 237, 0.07);
+  overflow: hidden;
+
+  // ── Cabecera ────────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    svg { color: var(--color-primary); }
+  }
+
+  &__add-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    @include t.transition((background-color, transform), fast);
+
+    &:hover {
+      background: var(--color-primary-dark);
+      transform: scale(1.1);
+    }
+  }
+
+  // ── Columnas cabecera ───────────────────────────────────────────────────
+  &__cols {
+    display: grid;
+    grid-template-columns: #{$cols};
+    align-items: center;
+    padding: var(--space-2) var(--space-6);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+
+    span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &:nth-child(3) { text-align: center; }
+      &:nth-child(4) { text-align: right; }
+    }
+  }
+
+  // ── Cuerpo ──────────────────────────────────────────────────────────────
+  &__body { min-height: 60px; }
+
+  &__loading,
+  &__empty {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  &__msg-error {
+    text-align: center;
+    padding: var(--space-4);
+    color: var(--color-error);
+    font-size: var(--text-sm);
+  }
+
+  &__empty-cta {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  // ── Pie totales ─────────────────────────────────────────────────────────
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-8);
+    padding: var(--space-4) var(--space-6);
+    border-top: 2px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  &__total-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+
+    &--pending &-value {
+      color: var(--color-primary);
+    }
+  }
+
+  &__total-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__total-value {
+    font-size: var(--text-lg);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ─── Fila de gasto ────────────────────────────────────────────────────────────
+.expense {
+  display: grid;
+  grid-template-columns: #{$cols};
+  align-items: center;
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  @include t.transition((background-color), fast);
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: #fafafe; }
+
+  // Pagado: tachado y muted
+  &--paid {
+    background: #f9f9ff;
+
+    .expense__name   { text-decoration: line-through; color: var(--color-text-muted); }
+    .expense__amount { color: var(--color-text-muted); }
+  }
+
+  // Edición
+  &--editing,
+  &--adding {
+    background: #fafafe;
+    column-gap: var(--space-2);
+    padding-block: var(--space-2);
+  }
+
+  // ── Checkbox personalizado ──────────────────────────────────────────────
+  &__check-wrap {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &__checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__check-box {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    @include t.transition((border-color, background-color), fast);
+
+    .expense__checkbox:checked + & {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        width: 5px;
+        height: 9px;
+        border: 2px solid #fff;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  // ── Texto ───────────────────────────────────────────────────────────────
+  &__name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: var(--space-2);
+  }
+
+  &__day {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  &__amount {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // ── Botones de acción ───────────────────────────────────────────────────
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-1);
+  }
+
+  &__edit-btn,
+  &__delete-btn,
+  &__save-btn,
+  &__cancel-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    @include t.transition((background-color, color), fast);
+  }
+
+  &__edit-btn {
+    color: var(--color-text-muted);
+    &:hover { background: var(--color-surface); color: var(--color-primary); }
+  }
+
+  &__delete-btn {
+    color: var(--color-text-muted);
+    &:hover { background: #fef2f2; color: var(--color-error); }
+  }
+
+  &__save-btn {
+    color: var(--color-success);
+    &:hover { background: #f0fdf4; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+
+  &__cancel-btn {
+    color: var(--color-text-muted);
+    &:hover { background: var(--color-surface); }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+
+  &__edit-spacer { display: block; width: 20px; }
+
+  // ── Inputs inline ───────────────────────────────────────────────────────
+  &__input {
+    height: 34px;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0 var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    background: #fff;
+    width: 100%;
+    @include t.transition((border-color, box-shadow), fast);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    }
+
+    &--day    { text-align: center; }
+    &--amount { text-align: right; }
+  }
+
+  &__row-error {
+    grid-column: 1 / -1;
+    font-size: var(--text-xs);
+    color: var(--color-error);
+    padding-top: 2px;
+  }
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  animation: fade-in 0.15s ease;
+}
+
+.modal {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+  animation: scale-in 0.15s ease;
+
+  &__title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+
+  &__body {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+    line-height: 1.6;
+
+    strong { color: var(--color-text); }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  &__cancel {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    @include t.transition((background-color), fast);
+    &:hover    { background: var(--color-surface); }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__confirm {
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-error);
+    border-radius: var(--radius);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #fff;
+    @include t.transition((background-color), fast);
+    &:hover    { background: #dc2626; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
+
+@keyframes fade-in  { from { opacity: 0; }                       to { opacity: 1; } }
+@keyframes scale-in { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
