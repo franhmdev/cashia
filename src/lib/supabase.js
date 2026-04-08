@@ -86,7 +86,7 @@ export const db = {
   fixedExpenses: {
     list: (token, month, year) =>
       dbRequest(
-        `/fixed_expenses?month=eq.${month}&year=eq.${year}&order=due_day.asc,created_at.asc`,
+        `/fixed_expenses?month=eq.${month}&year=eq.${year}&order=due_day.asc.nullslast,created_at.asc`,
         { token }
       ),
     create: (token, payload) =>

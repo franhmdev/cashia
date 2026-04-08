@@ -32,11 +32,12 @@ export function useFixedExpenses(month, year) {
   useEffect(() => { load() }, [load])
 
   const add = useCallback(async ({ name, amount, due_day }) => {
+    const parsedDay = parseInt(due_day, 10)
     const rows = await db.fixedExpenses.create(token, {
       user_id: userId,
       name,
       amount:  parseFloat(amount),
-      due_day: parseInt(due_day, 10) || 1,
+      due_day: parsedDay >= 1 && parsedDay <= 31 ? parsedDay : null,
       paid:    false,
       month,
       year,

@@ -93,7 +93,7 @@ function ExpenseRow({ expense, onToggle, onEdit, onDelete }) {
         <span className={styles['expense__check-box']} aria-hidden="true" />
       </label>
       <span className={styles['expense__name']}>{expense.name}</span>
-      <span className={styles['expense__day']}>día {expense.due_day}</span>
+      <span className={styles['expense__day']}>{expense.due_day ? `día ${expense.due_day}` : '—'}</span>
       <span className={styles['expense__amount']}>{fmt(expense.amount)}</span>
       <div className={styles['expense__actions']}>
         <button className={styles['expense__edit-btn']} onClick={onEdit} title="Editar">
@@ -121,10 +121,11 @@ function EditRow({ expense, onSave, onCancel }) {
   const handleSave = async () => {
     if (!form.name.trim() || !form.amount) return
     setSaving(true)
+    const parsedDay = parseInt(form.due_day, 10)
     await onSave({
       name:    form.name.trim(),
       amount:  parseFloat(form.amount),
-      due_day: Math.min(31, Math.max(1, parseInt(form.due_day, 10) || 1)),
+      due_day: parsedDay >= 1 && parsedDay <= 31 ? parsedDay : null,
     })
     setSaving(false)
   }
@@ -182,10 +183,11 @@ function AddRow({ onSave, onCancel }) {
     if (!form.name.trim())                   { setErr('El nombre es requerido'); return }
     if (!form.amount || isNaN(form.amount))  { setErr('Introduce un importe válido'); return }
     setSaving(true)
+    const parsedDay = parseInt(form.due_day, 10)
     await onSave({
       name:    form.name.trim(),
       amount:  parseFloat(form.amount),
-      due_day: Math.min(31, Math.max(1, parseInt(form.due_day, 10) || 1)),
+      due_day: parsedDay >= 1 && parsedDay <= 31 ? parsedDay : null,
     })
     setSaving(false)
   }
