@@ -97,29 +97,31 @@ export const db = {
       dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
     remove: (token, id) =>
       dbRequest(`/fixed_expenses?id=eq.${id}`, { token, method: 'DELETE' }),
-    // Propagar cambios de plantilla a meses futuros
+    // Propagar cambios de plantilla a meses futuros (dos queries simples en lugar de OR anidado)
     updateByTemplate: (token, templateId, payload, afterMonth, afterYear) =>
-      dbRequest(
-        `/fixed_expenses?template_id=eq.${templateId}&or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))`,
-        { token, method: 'PATCH', body: payload }
-      ),
+      Promise.all([
+        // años estrictamente posteriores
+        dbRequest(`/fixed_expenses?template_id=eq.${templateId}&year=gt.${afterYear}`, { token, method: 'PATCH', body: payload }),
+        // mismo año, meses estrictamente posteriores
+        dbRequest(`/fixed_expenses?template_id=eq.${templateId}&year=eq.${afterYear}&month=gt.${afterMonth}`, { token, method: 'PATCH', body: payload }),
+      ]),
     removeByTemplate: (token, templateId, afterMonth, afterYear) =>
-      dbRequest(
-        `/fixed_expenses?template_id=eq.${templateId}&or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))`,
-        { token, method: 'DELETE' }
-      ),
+      Promise.all([
+        dbRequest(`/fixed_expenses?template_id=eq.${templateId}&year=gt.${afterYear}`, { token, method: 'DELETE' }),
+        dbRequest(`/fixed_expenses?template_id=eq.${templateId}&year=eq.${afterYear}&month=gt.${afterMonth}`, { token, method: 'DELETE' }),
+      ]),
     // Verificar si un mes ya fue inicializado
     countForMonth: (token, month, year) =>
       dbRequest(
         `/fixed_expenses?month=eq.${month}&year=eq.${year}&select=id`,
         { token }
       ),
-    // Obtener todos los registros en meses futuros (para propagar nuevas plantillas)
+    // Obtener pares mes/año futuros que ya tienen datos (para propagar nuevas plantillas)
     listFutureMonths: (token, afterMonth, afterYear) =>
-      dbRequest(
-        `/fixed_expenses?or=(year.gt.${afterYear},and(year.eq.${afterYear},month.gt.${afterMonth}))&select=month,year`,
-        { token }
-      ),
+      Promise.all([
+        dbRequest(`/fixed_expenses?year=gt.${afterYear}&select=month,year`, { token }),
+        dbRequest(`/fixed_expenses?year=eq.${afterYear}&month=gt.${afterMonth}&select=month,year`, { token }),
+      ]).then(([a, b]) => [...(a ?? []), ...(b ?? [])]),
   },
 
   templates: {
