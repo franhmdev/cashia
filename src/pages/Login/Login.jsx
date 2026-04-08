@@ -81,8 +81,14 @@ export default function Login() {
 
         {/* ── Brand ──────────────────────────────────────────────────────── */}
         <div className={styles['login__brand']}>
-          <span className={styles['login__brand-icon']} aria-hidden="true" />
-          <span className={styles['login__brand-name']}>Cashia</span>
+          <svg width="26" height="26" viewBox="0 0 72 72" aria-hidden="true">
+            <circle cx="36" cy="36" r="34" fill="#7c3aed"/>
+            <path d="M8 36 Q17 20 27 36 Q36 52 46 36 Q56 20 64 28" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
+            <circle cx="36" cy="56" r="5" fill="white"/>
+          </svg>
+          <span className={styles['login__brand-name']}>
+            cash<span className={styles['login__brand-ai']}>.ai</span>
+          </span>
         </div>
 
         {/* ── Encabezado ─────────────────────────────────────────────────── */}

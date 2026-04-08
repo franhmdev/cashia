@@ -3,7 +3,7 @@
 // â”€â”€â”€ Datos mock del feed bancario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TRANSACTIONS = [
   { icon: 'ðŸ›’', label: 'Supermercado',  sub: 'Hoy, 10:24',  amount: '-$42.50',  color: '#ef4444', up: false },
-  { icon: 'ðŸ’¸', label: 'Transferencia', sub: 'Hoy, 09:05',  amount: '+$300.00', color: '#22c55e', up: true  },
+  { icon: '💸', label: 'Transferencia', sub: 'Hoy, 09:05',  amount: '+$300.00', color: '#10b981', up: true  },
   { icon: 'ðŸ”', label: 'Rappi',         sub: 'Ayer, 19:40', amount: '-$18.90',  color: '#ef4444', up: false },
   { icon: 'â›½', label: 'Gasolinera',    sub: 'Ayer, 14:12', amount: '-$55.00',  color: '#ef4444', up: false },
   { icon: 'ðŸ ', label: 'Arriendo',      sub: 'Abr 5',        amount: '-$800.00', color: '#ef4444', up: false },
@@ -74,7 +74,7 @@ function AuthIllustration() {
           fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" />
         <rect x={SX + SW - 7}  y={SY + 10} width="2"  height="3" rx="0.5"
           fill="rgba(255,255,255,0.5)" />
-        <rect x={SX + SW - 27} y={SY + 8}  width="14" height="7" rx="1.5" fill="#22c55e" />
+        <rect x={SX + SW - 27} y={SY + 8}  width="14" height="7" rx="1.5" fill="#10b981" />
 
         {/* Header */}
         <text x={SX + 12} y={SY + 35} fontSize="9.5" fill="rgba(255,255,255,0.55)"

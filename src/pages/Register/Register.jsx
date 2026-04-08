@@ -94,8 +94,14 @@ export default function Register() {
       <AuthLayout>
         <div className={styles['register']}>
           <div className={styles['register__brand']}>
-            <span className={styles['register__brand-icon']} aria-hidden="true" />
-            <span className={styles['register__brand-name']}>Cashia</span>
+            <svg width="26" height="26" viewBox="0 0 72 72" aria-hidden="true">
+              <circle cx="36" cy="36" r="34" fill="#7c3aed"/>
+              <path d="M8 36 Q17 20 27 36 Q36 52 46 36 Q56 20 64 28" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
+              <circle cx="36" cy="56" r="5" fill="white"/>
+            </svg>
+            <span className={styles['register__brand-name']}>
+              cash<span className={styles['register__brand-ai']}>.ai</span>
+            </span>
           </div>
           <div className={styles['register__header']}>
             <h1 className={styles['register__title']}>Check your<br />email</h1>
@@ -118,8 +124,14 @@ export default function Register() {
 
         {/* ── Brand ──────────────────────────────────────────────────────── */}
         <div className={styles['register__brand']}>
-          <span className={styles['register__brand-icon']} aria-hidden="true" />
-          <span className={styles['register__brand-name']}>Cashia</span>
+          <svg width="26" height="26" viewBox="0 0 72 72" aria-hidden="true">
+            <circle cx="36" cy="36" r="34" fill="#7c3aed"/>
+            <path d="M8 36 Q17 20 27 36 Q36 52 46 36 Q56 20 64 28" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
+            <circle cx="36" cy="56" r="5" fill="white"/>
+          </svg>
+          <span className={styles['register__brand-name']}>
+            cash<span className={styles['register__brand-ai']}>.ai</span>
+          </span>
         </div>
 
         {/* ── Encabezado ─────────────────────────────────────────────────── */}

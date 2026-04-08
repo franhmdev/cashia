@@ -1,7 +1,6 @@
 // =============================================================================
 // GENERIC » Custom Properties
 // Genera las CSS custom properties a partir de las variables de settings.
-// Aquí viven los tokens de diseño disponibles en runtime (dark mode, etc.)
 // =============================================================================
 @use '../settings' as s;
 
@@ -14,8 +13,8 @@
   --color-warning:      #{s.$color-warning};
   --color-error:        #{s.$color-error};
 
-  // Superficies (tema claro por defecto)
-  --color-bg:           #{s.$color-auth-page-bg};
+  // Superficies
+  --color-bg:           #{s.$color-bg-light};
   --color-bg-card:      #{s.$color-bg-card-light};
   --color-surface:      #{s.$color-surface-light};
   --color-text:         #{s.$color-text-light};
@@ -64,14 +63,4 @@
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
-}
-
-// Tema oscuro — solo sobreescribe las custom props de superficie
-[data-theme='dark'] {
-  --color-bg:         #{s.$color-bg-dark};
-  --color-bg-card:    #{s.$color-bg-card-dark};
-  --color-surface:    #{s.$color-surface-dark};
-  --color-text:       #{s.$color-text-dark};
-  --color-text-muted: #{s.$color-text-muted-dark};
-  --color-border:     #{s.$color-border-dark};
 }

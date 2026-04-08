@@ -1,4 +1,4 @@
-// =============================================================================
+﻿// =============================================================================
 // PAGE » Login  (.login)
 //
 // BEM:
@@ -26,7 +26,7 @@
 // =============================================================================
 
 $auth-primary:   #7c3aed;
-$auth-dark:      #6d28d9;
+$auth-dark:      #4c1d95;
 
 .login {
   display: flex;
@@ -65,16 +65,16 @@ $auth-dark:      #6d28d9;
 
   &__title {
     font-size: clamp(1.875rem, 4vw, 2.5rem);
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.1;
-    color: #0f172a;
+    color: #1e0a3c;
     letter-spacing: -0.5px;
     margin-bottom: 8px;
   }
 
   &__subtitle {
     font-size: 0.875rem;
-    color: #64748b;
+    color: #6b7280;
   }
 
   // ── Formulario ─────────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ $auth-dark:      #6d28d9;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
     font-size: 0.875rem;
-    color: #0f172a;
+    color: #1e0a3c;
     background: #fff;
     outline: none;
     transition: border-color 150ms ease, box-shadow 150ms ease;
@@ -169,7 +169,7 @@ $auth-dark:      #6d28d9;
     cursor: pointer;
     user-select: none;
     font-size: 0.875rem;
-    color: #64748b;
+    color: #6b7280;
   }
 
   &__checkbox {
@@ -225,7 +225,7 @@ $auth-dark:      #6d28d9;
     margin-top: auto;
     padding-top: 32px;
     font-size: 0.875rem;
-    color: #64748b;
+    color: #6b7280;
   }
 
   &__register-link {

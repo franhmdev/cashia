@@ -2,7 +2,6 @@ import { RouterProvider, Routes, Route, Redirect } from '@/router'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { Layout } from '@/components/Layout/Layout'
 import Home     from '@/pages/Home'
-import About    from '@/pages/About'
 import Login    from '@/pages/Login/Login'
 import Register from '@/pages/Register/Register'
 import NotFound from '@/pages/NotFound'
@@ -16,7 +15,7 @@ function PrivateRoute({ children }) {
 
 // ─── Páginas con layout ───────────────────────────────────────────────────────
 function HomePage()     { return <PrivateRoute><Layout><Home /></Layout></PrivateRoute> }
-function AboutPage()    { return <PrivateRoute><Layout><About /></Layout></PrivateRoute> }
+
 function NotFoundPage() { return <Layout><NotFound /></Layout> }
 
 export default function App() {
@@ -33,7 +32,6 @@ export default function App() {
 
           {/* App — rutas protegidas */}
           <Route path="/home"     component={HomePage} />
-          <Route path="/about"    component={AboutPage} />
           <Route path="*"         component={NotFoundPage} />
         </Routes>
       </RouterProvider>

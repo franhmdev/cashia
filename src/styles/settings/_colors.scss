@@ -1,40 +1,32 @@
 // =============================================================================
-// SETTINGS » Colors
-// Valores de color como variables SCSS. Las CSS custom props se generan
-// en generic/_custom-props.scss para permitir theming en runtime.
+// SETTINGS » Colors  — cash.ai Brand System v1.0
 // =============================================================================
 
-// Marca (violet — coherente con auth)
-$color-primary:      #7c3aed;
-$color-primary-dark: #6d28d9;
-$color-accent:       #a78bfa;
+// Marca
+$color-primary:      #7c3aed;   // Primary ★
+$color-primary-dark: #4c1d95;   // Deep violet — hover / emphasis
+$color-accent:       #a78bfa;   // Lavender
 
 // Semánticos
-$color-success: #22c55e;
-$color-warning: #f59e0b;
-$color-error:   #ef4444;
+$color-success:  #10b981;
+$color-warning:  #f59e0b;
+$color-error:    #ef4444;
+
+// Superficies
+$color-ghost: #f8f7ff;          // Surface 1 — page bg
+$color-mist:  #ede9fe;          // Surface 2 — card surfaces / borders
 
 // Tema claro
-$color-bg-light:      #f8fafc;
-$color-bg-card-light: #ffffff;
-$color-surface-light: #f1f5f9;
-$color-text-light:    #0f172a;
-$color-text-muted-light: #64748b;
-$color-border-light:  #e2e8f0;
+$color-bg-light:         $color-ghost;
+$color-bg-card-light:    #ffffff;
+$color-surface-light:    $color-mist;
+$color-text-light:       #1e0a3c;  // Obsidian
+$color-text-muted-light: #6b7280;
+$color-border-light:     $color-mist;
 
-// Tema oscuro
-$color-bg-dark:       #0f172a;
-
-// ─── Paleta auth (purple) ─────────────────────────────────────────────────────
-$color-auth-primary:      #7c3aed; // violet-600
-$color-auth-primary-dark: #6d28d9; // violet-700
-$color-auth-grad-from:    #a855f7; // purple-500
-$color-auth-grad-mid:     #7c3aed; // violet-600
-$color-auth-grad-to:      #6d28d9; // violet-700
-$color-auth-light:        #ddd6fe; // violet-200
-$color-auth-page-bg:      #e2e8f0; // slate-200
-$color-bg-card-dark:  #1e293b;
-$color-surface-dark:  #1e293b;
-$color-text-dark:     #f1f5f9;
-$color-text-muted-dark: #94a3b8;
-$color-border-dark:   #334155;
+// Auth gradient
+$color-auth-grad-from: $color-accent;        // #a78bfa
+$color-auth-grad-mid:  $color-primary;       // #7c3aed
+$color-auth-grad-to:   $color-primary-dark;  // #4c1d95
+$color-auth-light:     $color-mist;
+$color-auth-page-bg:   $color-ghost;

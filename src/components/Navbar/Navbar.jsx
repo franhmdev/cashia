@@ -31,7 +31,7 @@ export function Navbar() {
     <header className={styles.navbar}>
       <nav className={`${styles['navbar__inner']} o-container`} aria-label="Navegación principal">
         <Link to="/home" className={styles['navbar__brand']}>
-          Cashia
+          cash<span className={styles['navbar__brand-ai']}>.ai</span>
         </Link>
 
         {user && (

@@ -39,15 +39,20 @@
 
   &__brand {
     font-size: var(--text-xl);
-    font-weight: 800;
-    color: var(--color-primary);
+    font-weight: 600;
+    color: var(--color-text);
     letter-spacing: -0.5px;
     flex-shrink: 0;
     @include t.transition((color), fast);
 
     &:hover {
-      color: var(--color-primary-dark);
+      color: var(--color-primary);
     }
+  }
+
+  &__brand-ai {
+    font-weight: 300;
+    color: var(--color-primary);
   }
 
   &__links {
