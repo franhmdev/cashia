@@ -5,6 +5,9 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   css: {
+    modules: {
+      generateScopedName: '[folder]__[local]',
+    },
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
