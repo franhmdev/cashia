@@ -2,7 +2,7 @@
 // HOOKS » useFixedExpenses
 // Gestión de estado y CRUD para los gastos fijos de un mes/año dado
 // =============================================================================
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { db } from '@/lib/supabase'
 
@@ -11,9 +11,14 @@ export function useFixedExpenses(month, year) {
   const [items, setItems]     = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(null)
+  // Evita doble-seed dentro de la misma sesión de página para el mes actual
+  const seededRef = useRef(false)
 
   const token  = session?.access_token
   const userId = session?.user?.id
+
+  // Resetear el guard cuando cambia de mes para permitir seed en el nuevo mes
+  useEffect(() => { seededRef.current = false }, [month, year])
 
   const load = useCallback(async () => {
     if (!token) { setLoading(false); return }
@@ -22,15 +27,14 @@ export function useFixedExpenses(month, year) {
     try {
       const data = await db.fixedExpenses.list(token, month, year)
 
-      // Auto-seed desde plantillas la primera vez que se abre un mes vacío
-      // La clave solo se marca cuando ya hay plantillas y se ha sembrado,
-      // o cuando el mes ya tiene datos propios. Nunca antes, para permitir
-      // que meses visitados sin plantillas se vuelvan a intentar sembrar.
-      const seedKey = userId ? `cashia_seeded_${userId}_${year}_${month}` : null
-      if (data.length === 0 && seedKey && !localStorage.getItem(seedKey)) {
+      // Auto-seed: si el mes está vacío y no se ha sembrado en esta sesión,
+      // cargar las plantillas por defecto del usuario.
+      // No usa localStorage para que meses futuros no visitados funcionen
+      // aunque el usuario haya visitado el mes antes de crear plantillas.
+      if (data.length === 0 && !seededRef.current) {
+        seededRef.current = true  // marcar antes del fetch para evitar doble llamada
         const templates = await db.templates.list(token)
         if (templates && templates.length > 0) {
-          localStorage.setItem(seedKey, '1')
           const batch = templates.map(t => ({
             user_id:     userId,
             name:        t.name,
@@ -45,9 +49,6 @@ export function useFixedExpenses(month, year) {
           setItems(seeded ?? [])
           return
         }
-        // Sin plantillas: no marcar — se reintentará en la próxima visita
-      } else if (data.length > 0 && seedKey) {
-        localStorage.setItem(seedKey, '1')
       }
 
       setItems(data ?? [])
