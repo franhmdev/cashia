@@ -16,7 +16,8 @@ async function authRequest(path, options = {}) {
     ...options,
     headers: { ...BASE_HEADERS, ...options.headers },
   })
-  const data = await res.json()
+  const text = await res.text()
+  const data = text ? JSON.parse(text) : {}
   if (!res.ok) {
     const msg =
       data.error_description ||
