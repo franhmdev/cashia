@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { FixedExpenses } from '@/components/FixedExpenses/FixedExpenses'
 import { FixedIncomes } from '@/components/FixedIncomes/FixedIncomes'
 import { ExtraExpenses } from '@/components/ExtraExpenses/ExtraExpenses'
+import { BottomNav } from '@/components/BottomNav/BottomNav'
 import styles from './Home.module.scss'
 
 const MONTHS = [
@@ -15,6 +16,7 @@ export default function Home() {
   const now = new Date()
   const [month, setMonth] = useState(now.getMonth() + 1)
   const [year,  setYear]  = useState(now.getFullYear())
+  const [activeTab, setActiveTab] = useState('gastos')
 
   const prevMonth = () => {
     if (month === 1) { setMonth(12); setYear(y => y - 1) }
@@ -63,10 +65,18 @@ export default function Home() {
 
       {/* Módulos */}
       <div className={styles['dashboard__modules']}>
-        <FixedExpenses month={month} year={year} />
-        <FixedIncomes month={month} year={year} />
-        <ExtraExpenses month={month} year={year} />
+        {activeTab === 'gastos' && (
+          <>
+            <FixedExpenses month={month} year={year} />
+            <ExtraExpenses month={month} year={year} />
+          </>
+        )}
+        {activeTab === 'ingresos' && (
+          <FixedIncomes month={month} year={year} />
+        )}
       </div>
+
+      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   )
 }

@@ -6,6 +6,7 @@
 //   .layout__main    — contenido principal (flex: 1)
 //   .layout__footer  — pie de página
 // =============================================================================
+@use '../../styles/tools' as t;
 
 .layout {
   display: flex;
