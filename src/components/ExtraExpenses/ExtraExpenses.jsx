@@ -106,8 +106,18 @@ function DeleteModal({ name, onConfirm, onCancel, loading }) {
 
 // ─── Fila de gasto (visualización) ───────────────────────────────────────────
 function ExtraExpenseRow({ item, cat, onEdit, onDelete }) {
+  const [touched, setTouched] = useState(false)
+
+  const handleRowClick = (e) => {
+    if (e.target.closest('button, input, select')) return
+    setTouched(t => !t)
+  }
+
   return (
-    <div className={styles.txn}>
+    <div
+      className={[styles.txn, touched ? styles['txn--touched'] : ''].filter(Boolean).join(' ')}
+      onClick={handleRowClick}
+    >
       {/* Círculo de categoría */}
       <div
         className={`${styles['txn__cat']} ${!cat ? styles['txn__cat--none'] : ''}`}
@@ -145,10 +155,10 @@ function ExtraExpenseRow({ item, cat, onEdit, onDelete }) {
 
       {/* Acciones */}
       <div className={styles['txn__actions']}>
-        <button className={styles['txn__edit-btn']} onClick={onEdit} title="Editar">
+        <button className={styles['txn__edit-btn']} onClick={(e) => { e.stopPropagation(); setTouched(false); onEdit() }} title="Editar">
           <PencilIcon />
         </button>
-        <button className={styles['txn__delete-btn']} onClick={onDelete} title="Eliminar">
+        <button className={styles['txn__delete-btn']} onClick={(e) => { e.stopPropagation(); setTouched(false); onDelete() }} title="Eliminar">
           <MinusCircleIcon />
         </button>
       </div>

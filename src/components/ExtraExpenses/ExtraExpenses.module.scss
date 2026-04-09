@@ -639,8 +639,38 @@ $et-border:  #ede9fe;
 // ─── Mobile ────────────────────────────────────────────────────────────────────
 @include t.mq-down('md') {
   .txn {
+    position: relative;
+
     &__badge { display: none; }
     &__cat-select { flex: 1 1 100%; }
+
+    // Botones ocultos por defecto (sobrescribe el opacity:0 del desktop)
+    &__actions {
+      opacity: 1; // resetear opacity
+      display: none;
+    }
+
+    // Al tocar la tarjeta: overlay centrado con los botones
+    &--touched &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-4);
+      position: absolute;
+      inset: 0;
+      background: rgba(253, 252, 255, 0.93);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      z-index: 2;
+      animation: fade-in 0.12s ease;
+    }
+
+    &--touched &__edit-btn,
+    &--touched &__delete-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-lg);
+    }
   }
 
   .extra__cat-filter { max-width: 110px; }

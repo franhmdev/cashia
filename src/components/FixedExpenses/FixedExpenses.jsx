@@ -95,8 +95,22 @@ function DeleteModal({ name, onConfirm, onCancel, loading }) {
 
 // ─── Fila en modo visualización ───────────────────────────────────────────────
 function ExpenseRow({ expense, onToggle, onEdit, onDelete }) {
+  const [touched, setTouched] = useState(false)
+
+  const handleRowClick = (e) => {
+    if (e.target.closest('label, button, input')) return
+    setTouched(t => !t)
+  }
+
   return (
-    <div className={[styles.expense, expense.paid ? styles['expense--paid'] : ''].filter(Boolean).join(' ')}>
+    <div
+      className={[
+        styles.expense,
+        expense.paid ? styles['expense--paid'] : '',
+        touched ? styles['expense--touched'] : '',
+      ].filter(Boolean).join(' ')}
+      onClick={handleRowClick}
+    >
       <label className={styles['expense__check-wrap']} title={expense.paid ? 'Marcar como pendiente' : 'Marcar como pagado'}>
         <input
           type="checkbox"
@@ -110,10 +124,10 @@ function ExpenseRow({ expense, onToggle, onEdit, onDelete }) {
       <span className={styles['expense__day']}>{expense.due_day ? `Día ${expense.due_day}` : '—'}</span>
       <span className={styles['expense__amount']}>{fmt(expense.amount)}</span>
       <div className={styles['expense__actions']}>
-        <button className={styles['expense__edit-btn']} onClick={onEdit} title="Editar">
+        <button className={styles['expense__edit-btn']} onClick={(e) => { e.stopPropagation(); setTouched(false); onEdit() }} title="Editar">
           <PencilIcon />
         </button>
-        <button className={styles['expense__delete-btn']} onClick={onDelete} title="Eliminar">
+        <button className={styles['expense__delete-btn']} onClick={(e) => { e.stopPropagation(); setTouched(false); onDelete() }} title="Eliminar">
           <MinusCircleIcon />
         </button>
       </div>
