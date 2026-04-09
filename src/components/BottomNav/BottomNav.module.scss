@@ -1,94 +1,78 @@
 // =============================================================================
 // COMPONENT » BottomNav
-// BEM:
-//   .bottom-nav                — barra de navegación inferior fija
-//   .bottom-nav__inner         — contenedor centrado con max-width
-//   .bottom-nav__tab           — botón de pestaña
-//   .bottom-nav__tab--active   — estado activo
-//   .bottom-nav__indicator     — pastilla indicadora superior
-//   .bottom-nav__icon          — wrapper del icono
-//   .bottom-nav__label         — etiqueta de texto
+// Pill flotante sobre el contenido — sin texto, solo iconos
 // =============================================================================
 @use '../../styles/tools' as t;
 
-$nav-height: 64px;
+$nav-height:  60px;
+$nav-offset:  16px;  // separación del borde de pantalla
+$nav-radius:  22px;
 
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: calc($nav-offset + env(safe-area-inset-bottom, 0px));
+  left:  $nav-offset;
+  right: $nav-offset;
   z-index: 150;
   background: var(--color-bg-card);
-  border-top: 1.5px solid var(--color-border);
-  box-shadow: 0 -4px 24px rgba(30, 10, 60, 0.08);
-  // Safe area para iPhone con home indicator
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  border-radius: $nav-radius;
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  box-shadow:
+    0 8px 32px rgba(30, 10, 60, 0.16),
+    0 2px 8px  rgba(30, 10, 60, 0.08);
 
   &__inner {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     height: $nav-height;
-    max-width: 540px;
+    max-width: 480px;
     margin: 0 auto;
+    padding-inline: var(--space-4);
   }
 
   &__tab {
     flex: 1;
     position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding-bottom: 2px;
+    height: 44px;
+    border-radius: calc($nav-radius - 4px);
     color: var(--color-text-muted);
-    @include t.transition((color), fast);
+    @include t.transition((color, background-color), fast);
 
     &:hover {
       color: var(--color-primary);
+      background: rgba(124, 58, 237, 0.06);
     }
 
     &--active {
       color: var(--color-primary);
+      background: rgba(124, 58, 237, 0.10);
     }
-  }
-
-  // Pastilla indicadora encima del icono activo
-  &__indicator {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 32px;
-    height: 3px;
-    border-radius: 0 0 var(--radius-full) var(--radius-full);
-    background: var(--color-primary);
-    animation: indicator-pop 0.2s ease;
   }
 
   &__icon {
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 32px;
   }
 
-  &__label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    line-height: 1;
+  // Divider vertical entre tabs
+  &__tab + &__tab {
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 25%;
+      height: 50%;
+      width: 1px;
+      background: var(--color-border);
+    }
   }
 }
 
-@keyframes indicator-pop {
-  from { opacity: 0; transform: translateX(-50%) scaleX(0.4); }
-  to   { opacity: 1; transform: translateX(-50%) scaleX(1); }
-}
-
-// Reserva espacio en el cuerpo para que el contenido no quede tapado
+// Reserva espacio para que el contenido no quede tapado por el nav
 :global(body) {
-  padding-bottom: calc($nav-height + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc($nav-height + $nav-offset * 2 + env(safe-area-inset-bottom, 0px));
 }
+

@@ -62,11 +62,9 @@ export function BottomNav({ activeTab, onTabChange }) {
               aria-current={isActive ? 'page' : undefined}
               aria-label={label}
             >
-              {isActive && <span className={styles['bottom-nav__indicator']} />}
               <span className={styles['bottom-nav__icon']}>
                 <Icon active={isActive} />
               </span>
-              <span className={styles['bottom-nav__label']}>{label}</span>
             </button>
           )
         })}
