@@ -43,12 +43,10 @@ $nav-radius:  22px;
 
     &:hover {
       color: var(--color-primary);
-      background: rgba(124, 58, 237, 0.06);
     }
 
     &--active {
       color: var(--color-primary);
-      background: rgba(124, 58, 237, 0.10);
     }
   }
 
