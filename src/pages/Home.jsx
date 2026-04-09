@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { FixedExpenses } from '@/components/FixedExpenses/FixedExpenses'
 import { FixedIncomes } from '@/components/FixedIncomes/FixedIncomes'
+import { ExtraExpenses } from '@/components/ExtraExpenses/ExtraExpenses'
 import styles from './Home.module.scss'
 
 const MONTHS = [
@@ -64,6 +65,7 @@ export default function Home() {
       <div className={styles['dashboard__modules']}>
         <FixedExpenses month={month} year={year} />
         <FixedIncomes month={month} year={year} />
+        <ExtraExpenses month={month} year={year} />
       </div>
     </div>
   )

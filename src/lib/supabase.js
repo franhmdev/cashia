@@ -183,4 +183,30 @@ export const db = {
     remove: (token, id) =>
       dbRequest(`/fixed_income_templates?id=eq.${id}`, { token, method: 'DELETE' }),
   },
+
+  // ── Gastos extras ──────────────────────────────────────────────────────────
+  extraExpenses: {
+    list: (token, month, year) =>
+      dbRequest(
+        `/extra_expenses?month=eq.${month}&year=eq.${year}&order=due_day.asc.nullslast,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/extra_expenses', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/extra_expenses?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/extra_expenses?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
+
+  extraExpenseCategories: {
+    list: (token) =>
+      dbRequest('/extra_expense_categories?order=name.asc', { token }),
+    create: (token, payload) =>
+      dbRequest('/extra_expense_categories', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/extra_expense_categories?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/extra_expense_categories?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
 }
