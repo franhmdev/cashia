@@ -1,8 +1,23 @@
 // =============================================================================
 // COMPONENT » BottomNav
-// Navegación inferior sticky para la app — tabs: Gastos | Ingresos
+// Navegación inferior sticky para la app — tabs: Resumen | Gastos | Ingresos
 // =============================================================================
 import styles from './BottomNav.module.scss'
+
+function ResumenIcon({ active }) {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1.5"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+      <rect x="14" y="3" width="7" height="7" rx="1.5"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+      <rect x="3" y="14" width="7" height="7" rx="1.5"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+      <rect x="14" y="14" width="7" height="7" rx="1.5"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+    </svg>
+  )
+}
 
 function ExpensesIcon({ active }) {
   return (
@@ -41,6 +56,7 @@ function IncomesIcon({ active }) {
 }
 
 const TABS = [
+  { id: 'resumen',  label: 'Resumen',  Icon: ResumenIcon  },
   { id: 'gastos',   label: 'Gastos',   Icon: ExpensesIcon },
   { id: 'ingresos', label: 'Ingresos', Icon: IncomesIcon  },
 ]

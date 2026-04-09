@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { FixedExpenses } from '@/components/FixedExpenses/FixedExpenses'
 import { FixedIncomes } from '@/components/FixedIncomes/FixedIncomes'
 import { ExtraExpenses } from '@/components/ExtraExpenses/ExtraExpenses'
+import { SavingsSummary } from '@/components/SavingsSummary/SavingsSummary'
 import { BottomNav } from '@/components/BottomNav/BottomNav'
 import styles from './Home.module.scss'
 
@@ -16,7 +17,7 @@ export default function Home() {
   const now = new Date()
   const [month, setMonth] = useState(now.getMonth() + 1)
   const [year,  setYear]  = useState(now.getFullYear())
-  const [activeTab, setActiveTab] = useState('gastos')
+  const [activeTab, setActiveTab] = useState('resumen')
 
   const prevMonth = () => {
     if (month === 1) { setMonth(12); setYear(y => y - 1) }
@@ -65,6 +66,9 @@ export default function Home() {
 
       {/* Módulos */}
       <div className={styles['dashboard__modules']}>
+        {activeTab === 'resumen' && (
+          <SavingsSummary month={month} year={year} />
+        )}
         {activeTab === 'gastos' && (
           <>
             <FixedExpenses month={month} year={year} />
