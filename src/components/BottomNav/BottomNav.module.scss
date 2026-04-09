@@ -1,25 +1,20 @@
 // =============================================================================
-// COMPONENT » BottomNav
-// Pill flotante sobre el contenido — sin texto, solo iconos
+// COMPONENT » BottomNav — full width, pegado al borde inferior
 // =============================================================================
 @use '../../styles/tools' as t;
 
-$nav-height:  60px;
-$nav-offset:  16px;  // separación del borde de pantalla
-$nav-radius:  22px;
+$nav-height: 60px;
 
 .bottom-nav {
   position: fixed;
-  bottom: calc($nav-offset + env(safe-area-inset-bottom, 0px));
-  left:  $nav-offset;
-  right: $nav-offset;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 150;
   background: var(--color-bg-card);
-  border-radius: $nav-radius;
-  border: 1px solid rgba(124, 58, 237, 0.14);
-  box-shadow:
-    0 8px 32px rgba(30, 10, 60, 0.16),
-    0 2px 8px  rgba(30, 10, 60, 0.08);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 24px rgba(30, 10, 60, 0.08);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 
   &__inner {
     display: flex;
@@ -27,7 +22,6 @@ $nav-radius:  22px;
     height: $nav-height;
     max-width: 480px;
     margin: 0 auto;
-    padding-inline: var(--space-4);
   }
 
   &__tab {
@@ -36,18 +30,12 @@ $nav-radius:  22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 44px;
-    border-radius: calc($nav-radius - 4px);
+    height: 100%;
     color: var(--color-text-muted);
-    @include t.transition((color, background-color), fast);
+    @include t.transition((color), fast);
 
-    &:hover {
-      color: var(--color-primary);
-    }
-
-    &--active {
-      color: var(--color-primary);
-    }
+    &:hover   { color: var(--color-primary); }
+    &--active { color: var(--color-primary); }
   }
 
   &__icon {
@@ -56,21 +44,19 @@ $nav-radius:  22px;
   }
 
   // Divider vertical entre tabs
-  &__tab + &__tab {
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 25%;
-      height: 50%;
-      width: 1px;
-      background: var(--color-border);
-    }
+  &__tab + &__tab::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: var(--color-border);
   }
 }
 
-// Reserva espacio para que el contenido no quede tapado por el nav
+// Reserva espacio para que el contenido no quede tapado
 :global(body) {
-  padding-bottom: calc($nav-height + $nav-offset * 2 + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc($nav-height + env(safe-area-inset-bottom, 0px));
 }
 
