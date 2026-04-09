@@ -13,6 +13,13 @@ function PrivateRoute({ children }) {
   return children
 }
 
+// ─── Ruta pública — redirige a /home si ya hay sesión ────────────────────────
+function PublicRoute({ children }) {
+  const { isAuthenticated } = useAuth()
+  if (isAuthenticated) return <Redirect to="/home" />
+  return children
+}
+
 // ─── Páginas con layout ───────────────────────────────────────────────────────
 function HomePage()     { return <PrivateRoute><Layout><Home /></Layout></PrivateRoute> }
 
@@ -24,8 +31,8 @@ export default function App() {
       <RouterProvider>
         <Routes>
           {/* Auth — layout propio (split panel, sin Navbar) */}
-          <Route path="/login"    component={Login} />
-          <Route path="/register" component={Register} />
+          <Route path="/login"    component={() => <PublicRoute><Login /></PublicRoute>} />
+          <Route path="/register" component={() => <PublicRoute><Register /></PublicRoute>} />
 
           {/* Raíz — redirige a login */}
           <Route path="/"         component={() => <Redirect to="/login" />} />
