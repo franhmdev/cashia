@@ -100,6 +100,12 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-text-muted);
+
+    @include t.mq-down('md') {
+      font-size: 9px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
   }
 
   &__amount {
