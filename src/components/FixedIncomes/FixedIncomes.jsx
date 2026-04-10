@@ -94,11 +94,11 @@ function DeleteModal({ name, onConfirm, onCancel, loading }) {
 }
 
 // ─── Fila en modo visualización ───────────────────────────────────────────────
-function IncomeRow({ income, onToggle, onEdit, onDelete }) {
+function IncomeRow({ income, onEdit, onDelete }) {
   const [touched, setTouched] = useState(false)
 
   const handleRowClick = (e) => {
-    if (e.target.closest('label, button, input')) return
+    if (e.target.closest('button, input')) return
     setTouched(t => !t)
   }
 
@@ -111,15 +111,6 @@ function IncomeRow({ income, onToggle, onEdit, onDelete }) {
       ].filter(Boolean).join(' ')}
       onClick={handleRowClick}
     >
-      <label className={styles['income__check-wrap']} title={income.received ? 'Marcar como pendiente' : 'Marcar como recibido'}>
-        <input
-          type="checkbox"
-          checked={income.received}
-          onChange={onToggle}
-          className={styles['income__checkbox']}
-        />
-        <span className={styles['income__check-box']} aria-hidden="true" />
-      </label>
       <span className={styles['income__name']}>{income.name}</span>
       <span className={styles['income__day']}>{income.due_day ? `Día ${income.due_day}` : '—'}</span>
       <span className={styles['income__amount']}>{fmt(income.amount)}</span>
@@ -162,7 +153,6 @@ function EditRow({ income, onSave, onCancel }) {
 
   return (
     <div className={`${styles.income} ${styles['income--editing']}`}>
-      <span className={styles['income__edit-spacer']} />
       <input
         className={styles['income__input']}
         value={form.name}
@@ -501,7 +491,6 @@ export function FixedIncomes({ month, year }) {
             {/* Cabeceras de columnas */}
             {(items.length > 0 || isAdding) && (
               <div className={styles['incomes__cols']}>
-                <span />
                 <span>Concepto</span>
                 <span>Fecha</span>
                 <span>Importe</span>
@@ -523,7 +512,6 @@ export function FixedIncomes({ month, year }) {
                   <IncomeRow
                     key={inc.id}
                     income={inc}
-                    onToggle={() => toggle(inc.id, !inc.received)}
                     onEdit={() => { setEditingId(inc.id); setIsAdding(false) }}
                     onDelete={() => setDeleteItem(inc)}
                   />

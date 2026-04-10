@@ -15,8 +15,8 @@
 // =============================================================================
 @use '../../styles/tools' as t;
 
-// Columnas de cada fila: checkbox | nombre | día | importe | acciones
-$cols: 28px 1fr 72px 108px 64px;
+// Columnas de cada fila: nombre | día | importe | acciones
+$cols: 1fr 72px 108px 64px;
 $fi-surface: #f4fdf7;   // fondo de cabecera / pie — verde muy suave
 $fi-border:  #d1fae5;   // borde de filas — verde claro
 
@@ -83,8 +83,8 @@ $fi-border:  #d1fae5;   // borde de filas — verde claro
       text-transform: uppercase;
       letter-spacing: 0.5px;
 
-      &:nth-child(3) { text-align: center; }
-      &:nth-child(4) { text-align: right; }
+      &:nth-child(2) { text-align: center; }
+      &:nth-child(3) { text-align: right; }
     }
   }
 
@@ -529,16 +529,16 @@ $tpl-cols: 1fr 72px 108px 64px;
 
 // ─── Mobile: ocultar columna Día + overlay de acciones al tocar ─────────────
 @include t.mq-down('md') {
-  $cols-mobile: 28px 3fr 2fr;
+  $cols-mobile: 3fr 2fr;
   $tpl-cols-mobile: 3fr 2fr;
 
   .incomes__cols {
     grid-template-columns: #{$cols-mobile};
-    span:nth-child(3) { display: none; }
-    span:nth-child(5) { display: none; }
+    span:nth-child(2) { display: none; }   // Fecha
+    span:nth-child(4) { display: none; }   // acciones placeholder
 
-    span:nth-child(2) { padding-left: 0; }           // Concepto
-    span:nth-child(4) { text-align: right; }           // Importe
+    span:nth-child(1) { padding-left: 0; }          // Concepto
+    span:nth-child(3) { text-align: right; }         // Importe
   }
 
   .income {
