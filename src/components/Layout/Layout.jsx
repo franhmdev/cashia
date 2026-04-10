@@ -8,11 +8,6 @@ export function Layout({ children }) {
       <main className={`${styles['layout__main']} o-container`}>
         {children}
       </main>
-      <footer className={styles['layout__footer']}>
-        <p className="o-container">
-          © {new Date().getFullYear()} cash.ai
-        </p>
-      </footer>
     </div>
   )
 }
