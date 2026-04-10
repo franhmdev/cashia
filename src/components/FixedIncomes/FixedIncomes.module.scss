@@ -529,13 +529,16 @@ $tpl-cols: 1fr 72px 108px 64px;
 
 // ─── Mobile: ocultar columna Día + overlay de acciones al tocar ─────────────
 @include t.mq-down('md') {
-  $cols-mobile: 28px 60% 40%;
-  $tpl-cols-mobile: 60% 40%;
+  $cols-mobile: 28px 3fr 2fr;
+  $tpl-cols-mobile: 3fr 2fr;
 
   .incomes__cols {
     grid-template-columns: #{$cols-mobile};
     span:nth-child(3) { display: none; }
     span:nth-child(5) { display: none; }
+
+    span:nth-child(2) { padding-left: 0; }                         // Concepto
+    span:nth-child(4) { text-align: right; padding-right: 28px; }  // Importe
   }
 
   .income {
@@ -543,22 +546,21 @@ $tpl-cols: 1fr 72px 108px 64px;
     position: relative;
 
     &__day     { display: none; }
-    &__actions { display: none; } // oculto del flujo normal
+    &__actions { display: none; }
 
     &__amount {
       text-align: right;
-      padding-right: var(--space-2);
+      padding-right: 28px;
     }
 
-    // Al tocar la fila: overlay con borde violeta y separación de los bordes
     &--touched &__actions {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: var(--space-4);
       position: absolute;
-      inset: 10px;
-      background: rgba(244, 253, 247, 0.95);
+      inset: 5px;
+      background: rgba(124, 58, 237, 0.10);
       backdrop-filter: blur(4px);
       border: 1.5px solid rgba(124, 58, 237, 0.35);
       border-radius: var(--radius-lg);
