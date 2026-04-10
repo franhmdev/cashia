@@ -537,8 +537,8 @@ $tpl-cols: 1fr 72px 108px 64px;
     span:nth-child(3) { display: none; }
     span:nth-child(5) { display: none; }
 
-    span:nth-child(2) { padding-left: 0; }                         // Concepto
-    span:nth-child(4) { text-align: right; padding-right: 28px; }  // Importe
+    span:nth-child(2) { padding-left: 0; }           // Concepto
+    span:nth-child(4) { text-align: right; }           // Importe
   }
 
   .income {
@@ -550,7 +550,6 @@ $tpl-cols: 1fr 72px 108px 64px;
 
     &__amount {
       text-align: right;
-      padding-right: 28px;
     }
 
     &--touched &__actions {
