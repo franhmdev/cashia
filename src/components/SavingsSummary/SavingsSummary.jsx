@@ -15,6 +15,102 @@ function formatCurrency(value) {
   }).format(value)
 }
 
+function formatShort(value) {
+  const abs = Math.abs(value)
+  const sign = value < 0 ? '-' : ''
+  if (abs >= 1000) return `${sign}${(abs / 1000).toFixed(1)}k€`
+  return `${sign}${abs.toFixed(0)}€`
+}
+
+// ─── SVG Bar Chart ───────────────────────────────────────────────────────────────────
+function BarChart({ totalIncome, totalFixed, totalExtra, real }) {
+  const BAR_W   = 48
+  const GAP     = 20
+  const H       = 160   // height of the chart area
+  const LABEL_H = 28    // space below bars for labels
+  const VALUE_H = 22    // space above bars for values
+  const SVG_H   = H + LABEL_H + VALUE_H
+
+  const bars = [
+    { label: 'Ingresos',      value: totalIncome, color: '#059669' },
+    { label: 'Gastos fijos',  value: totalFixed,  color: '#7c3aed' },
+    { label: 'Gastos extras', value: totalExtra,  color: '#f59e0b' },
+    { label: 'Ahorro real',   value: real,        color: real >= 0 ? '#0891b2' : '#dc2626' },
+  ]
+
+  const maxVal = Math.max(...bars.map(b => Math.abs(b.value)), 1)
+  const totalW = bars.length * BAR_W + (bars.length - 1) * GAP
+
+  return (
+    <div className={styles['bar-chart']}>
+      <svg
+        viewBox={`0 0 ${totalW} ${SVG_H}`}
+        width="100%"
+        preserveAspectRatio="xMidYMid meet"
+        aria-label="Gráfico de barras del mes"
+        role="img"
+      >
+        {bars.map((bar, i) => {
+          const x       = i * (BAR_W + GAP)
+          const barH    = Math.max(4, (Math.abs(bar.value) / maxVal) * H)
+          const y       = VALUE_H + (H - barH)
+          const isNeg   = bar.value < 0
+
+          return (
+            <g key={bar.label}>
+              {/* Barra */}
+              <rect
+                x={x}
+                y={isNeg ? VALUE_H + H - barH : y}
+                width={BAR_W}
+                height={barH}
+                fill={bar.color}
+                rx="6"
+                opacity="0.88"
+              />
+
+              {/* Valor encima */}
+              <text
+                x={x + BAR_W / 2}
+                y={isNeg ? VALUE_H + H + 6 : y - 6}
+                textAnchor="middle"
+                fontSize="10"
+                fontWeight="700"
+                fill={bar.color}
+              >
+                {formatShort(bar.value)}
+              </text>
+
+              {/* Etiqueta abajo */}
+              <text
+                x={x + BAR_W / 2}
+                y={VALUE_H + H + LABEL_H - 4}
+                textAnchor="middle"
+                fontSize="9"
+                fill="#6b7280"
+              >
+                {bar.label.split(' ').map((word, wi) => (
+                  <tspan key={wi} x={x + BAR_W / 2} dy={wi === 0 ? 0 : 11}>
+                    {word}
+                  </tspan>
+                ))}
+              </text>
+            </g>
+          )
+        })}
+
+        {/* Línea base */}
+        <line
+          x1="0" y1={VALUE_H + H}
+          x2={totalW} y2={VALUE_H + H}
+          stroke="#e5e7eb"
+          strokeWidth="1"
+        />
+      </svg>
+    </div>
+  )
+}
+
 function SavingsCard({ label, amount, description, icon }) {
   const isPositive = amount >= 0
   return (
@@ -101,6 +197,15 @@ export function SavingsSummary({ month, year }) {
             </span>
           </div>
         </div>
+      )}
+
+      {!loading && (
+        <BarChart
+          totalIncome={totalIncome}
+          totalFixed={totalFixed}
+          totalExtra={totalExtra}
+          real={real}
+        />
       )}
     </section>
   )
