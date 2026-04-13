@@ -55,10 +55,26 @@ function IncomesIcon({ active }) {
   )
 }
 
+function CardIcon({ active }) {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+      <rect x="2" y="5" width="20" height="14" rx="2"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+      <line x1="2" y1="10" x2="22" y2="10"
+        stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
+      <line x1="6" y1="15" x2="9" y2="15"
+        stroke="currentColor" strokeWidth={active ? 2 : 1.6} strokeLinecap="round" />
+      <line x1="12" y1="15" x2="14" y2="15"
+        stroke="currentColor" strokeWidth={active ? 2 : 1.6} strokeLinecap="round" />
+    </svg>
+  )
+}
+
 const TABS = [
   { id: 'resumen',  label: 'Resumen',  Icon: ResumenIcon  },
   { id: 'gastos',   label: 'Gastos',   Icon: ExpensesIcon },
   { id: 'ingresos', label: 'Ingresos', Icon: IncomesIcon  },
+  { id: 'tarjeta',  label: 'Tarjeta',  Icon: CardIcon     },
 ]
 
 export function BottomNav({ activeTab, onTabChange }) {

@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { FixedExpenses } from '@/components/FixedExpenses/FixedExpenses'
 import { FixedIncomes } from '@/components/FixedIncomes/FixedIncomes'
 import { ExtraExpenses } from '@/components/ExtraExpenses/ExtraExpenses'
+import { BlackCard } from '@/components/BlackCard/BlackCard'
 import { SavingsSummary } from '@/components/SavingsSummary/SavingsSummary'
 import { BottomNav } from '@/components/BottomNav/BottomNav'
 import styles from './Home.module.scss'
@@ -77,6 +78,9 @@ export default function Home() {
         )}
         {activeTab === 'ingresos' && (
           <FixedIncomes month={month} year={year} />
+        )}
+        {activeTab === 'tarjeta' && (
+          <BlackCard month={month} year={year} />
         )}
       </div>
 

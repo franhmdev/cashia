@@ -1,28 +1,23 @@
 // =============================================================================
-// COMPONENT » ExtraExpenses
-// BEM:
-//   .extra                      — tarjeta contenedor principal
-//   .extra__header              — cabecera con título + filtro + botones
-//   .extra__header-right        — grupo derecho del header
-//   .extra__cat-filter          — select de filtro por categoría
-//   .extra__manage-btn          — botón ruleta de categorías
-//   .extra__add-btn             — botón circular +
-//   .extra__body                — lista de tarjetas de transacción
-//   .extra__footer              — pie con contador y total
-//   .txn                        — tarjeta de transacción individual
-//   .txn--editing / --adding    — estado de edición/adición
+// COMPONENT » BlackCard  (dark-themed, misma estructura que ExtraExpenses)
+// BEM prefix: .bc  (BlackCard)
 // =============================================================================
 @use '../../styles/tools' as t;
 
-$et-surface: #fdfcff;
-$et-border:  #ede9fe;
+$bc-surface:  #1a1625;   // fondo de cabecera/pie — morado muy oscuro
+$bc-card-bg:  #13111e;   // fondo de cada tarjeta de gasto
+$bc-border:   #2d2845;   // borde general
+$bc-accent:   #f9fafb;   // texto claro sobre oscuro
+$bc-gold:     #f59e0b;   // importe — dorado/ámbar
 
 // ─── Tarjeta principal ────────────────────────────────────────────────────────
-.extra {
-  background: var(--color-bg-card);
+.bc {
+  background: $bc-card-bg;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 2px 16px rgba(124, 58, 237, 0.07);
+  border: 1px solid $bc-border;
+  box-shadow:
+    0 2px 24px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(245, 158, 11, 0.06);
   overflow: hidden;
 
   // ── Cabecera ────────────────────────────────────────────────────────────
@@ -31,8 +26,8 @@ $et-border:  #ede9fe;
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
-    background: $et-surface;
-    border-bottom: 1px solid $et-border;
+    background: $bc-surface;
+    border-bottom: 1px solid $bc-border;
   }
 
   &__title {
@@ -42,11 +37,11 @@ $et-border:  #ede9fe;
     gap: var(--space-2);
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--color-text);
+    color: $bc-accent;
     text-transform: uppercase;
     letter-spacing: 0.4px;
 
-    svg { color: var(--color-primary); }
+    svg { color: $bc-gold; }
   }
 
   &__header-right {
@@ -58,57 +53,50 @@ $et-border:  #ede9fe;
 
   &__cat-filter {
     height: 30px;
-    border: 1.5px solid var(--color-border);
+    border: 1.5px solid $bc-border;
     border-radius: var(--radius);
     padding: 0 var(--space-3);
     font-family: inherit;
     font-size: var(--text-xs);
     font-weight: 500;
-    color: var(--color-text);
-    background: #fff;
+    color: $bc-accent;
+    background: $bc-card-bg;
     cursor: pointer;
     max-width: 140px;
     @include t.transition((border-color), fast);
 
-    &:focus {
-      outline: none;
-      border-color: var(--color-primary);
-    }
+    option { background: $bc-card-bg; color: $bc-accent; }
+
+    &:focus { outline: none; border-color: $bc-gold; }
   }
 
   &__manage-btn {
     width: 30px;
     height: 30px;
     border-radius: var(--radius-full);
-    background: var(--color-surface);
-    border: 1.5px solid var(--color-border);
-    color: var(--color-primary);
+    background: rgba(245, 158, 11, 0.08);
+    border: 1.5px solid $bc-border;
+    color: $bc-gold;
     display: grid;
     place-items: center;
     flex-shrink: 0;
     @include t.transition((background-color, border-color), fast);
 
-    &:hover {
-      background: rgba(124, 58, 237, 0.08);
-      border-color: var(--color-primary);
-    }
+    &:hover { background: rgba(245, 158, 11, 0.18); border-color: $bc-gold; }
   }
 
   &__add-btn {
     width: 30px;
     height: 30px;
     border-radius: var(--radius-full);
-    background: var(--color-primary);
-    color: #fff;
+    background: $bc-gold;
+    color: #1a1625;
     display: grid;
     place-items: center;
     flex-shrink: 0;
     @include t.transition((background-color, transform), fast);
 
-    &:hover {
-      background: var(--color-primary-dark);
-      transform: scale(1.1);
-    }
+    &:hover { background: #d97706; transform: scale(1.1); }
   }
 
   // ── Cuerpo ──────────────────────────────────────────────────────────────
@@ -124,7 +112,7 @@ $et-border:  #ede9fe;
   &__empty {
     text-align: center;
     padding: var(--space-6);
-    color: var(--color-text-muted);
+    color: #706b8f;
     font-size: var(--text-sm);
   }
 
@@ -136,7 +124,7 @@ $et-border:  #ede9fe;
   }
 
   &__empty-cta {
-    color: var(--color-primary);
+    color: $bc-gold;
     font-weight: 600;
     text-decoration: underline;
     cursor: pointer;
@@ -148,13 +136,13 @@ $et-border:  #ede9fe;
     align-items: center;
     justify-content: space-between;
     padding: var(--space-3) var(--space-5) var(--space-4);
-    border-top: 2px solid $et-border;
-    background: $et-surface;
+    border-top: 2px solid $bc-border;
+    background: $bc-surface;
   }
 
   &__count {
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
+    color: #706b8f;
     font-weight: 500;
   }
 
@@ -168,7 +156,7 @@ $et-border:  #ede9fe;
   &__total-label {
     font-size: 10px;
     font-weight: 600;
-    color: var(--color-text-muted);
+    color: #706b8f;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -178,7 +166,7 @@ $et-border:  #ede9fe;
     font-weight: 800;
     letter-spacing: -0.5px;
     font-variant-numeric: tabular-nums;
-    color: var(--color-error);
+    color: $bc-gold;
   }
 }
 
@@ -189,20 +177,20 @@ $et-border:  #ede9fe;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
-  border: 1px solid $et-border;
-  background: #fff;
+  border: 1px solid $bc-border;
+  background: $bc-surface;
   @include t.transition((background-color, border-color, box-shadow), fast);
 
   &:hover {
-    background: $et-surface;
-    border-color: rgba(124, 58, 237, 0.22);
-    box-shadow: 0 2px 10px rgba(124, 58, 237, 0.07);
+    background: #201c2e;
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
 
   &--editing,
   &--adding {
-    background: #faf9ff;
-    border-color: var(--color-primary);
+    background: #1f1a30;
+    border-color: $bc-gold;
     border-width: 1.5px;
     align-items: flex-start;
     flex-wrap: wrap;
@@ -227,8 +215,8 @@ $et-border:  #ede9fe;
   }
 
   &__cat--none {
-    background: #f3f4f6 !important;
-    color: #9ca3af;
+    background: #2a2640 !important;
+    color: #6b7280;
     font-size: 18px;
     font-weight: 400;
   }
@@ -245,7 +233,7 @@ $et-border:  #ede9fe;
   &__name {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--color-text);
+    color: $bc-accent;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -260,7 +248,7 @@ $et-border:  #ede9fe;
 
   &__day {
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
+    color: #6b7280;
   }
 
   &__badge {
@@ -274,14 +262,14 @@ $et-border:  #ede9fe;
   &__badge-none {
     font-size: 10px;
     font-weight: 500;
-    color: #9ca3af;
+    color: #4b5563;
   }
 
   // ── Importe ─────────────────────────────────────────────────────────────
   &__amount {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--color-error);
+    color: $bc-gold;
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
   }
@@ -310,10 +298,10 @@ $et-border:  #ede9fe;
     flex-shrink: 0;
   }
 
-  &__edit-btn   { color: var(--color-text-muted); &:hover { background: var(--color-surface); color: var(--color-primary); } }
-  &__delete-btn { color: var(--color-text-muted); &:hover { background: #fef2f2; color: var(--color-error); } }
-  &__save-btn   { color: var(--color-success);    &:hover { background: #f0fdf4; } &:disabled { opacity: 0.4; cursor: not-allowed; } }
-  &__cancel-btn { color: var(--color-text-muted); &:hover { background: var(--color-surface); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
+  &__edit-btn   { color: #6b7280; &:hover { background: rgba(245,158,11,0.12); color: $bc-gold; } }
+  &__delete-btn { color: #6b7280; &:hover { background: #2d1515; color: var(--color-error); } }
+  &__save-btn   { color: var(--color-success); &:hover { background: rgba(16,185,129,0.1); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
+  &__cancel-btn { color: #6b7280; &:hover { background: rgba(255,255,255,0.06); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
 
   // ── Formulario inline ───────────────────────────────────────────────────
   &__form {
@@ -332,21 +320,23 @@ $et-border:  #ede9fe;
 
   &__input {
     height: 34px;
-    border: 1.5px solid var(--color-border);
+    border: 1.5px solid $bc-border;
     border-radius: var(--radius);
     padding: 0 var(--space-2);
     font-family: inherit;
     font-size: var(--text-sm);
-    color: var(--color-text);
-    background: #fff;
+    color: $bc-accent;
+    background: $bc-card-bg;
     flex: 1 1 120px;
     min-width: 0;
     @include t.transition((border-color, box-shadow), fast);
 
+    &::placeholder { color: #4b5563; }
+
     &:focus {
       outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+      border-color: $bc-gold;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
     }
 
     &--day    { flex: 0 0 60px; text-align: center; }
@@ -355,22 +345,21 @@ $et-border:  #ede9fe;
 
   &__cat-select {
     height: 34px;
-    border: 1.5px solid var(--color-border);
+    border: 1.5px solid $bc-border;
     border-radius: var(--radius);
     padding: 0 var(--space-2);
     font-family: inherit;
     font-size: var(--text-sm);
-    color: var(--color-text);
-    background: #fff;
+    color: $bc-accent;
+    background: $bc-card-bg;
     cursor: pointer;
     flex: 1 1 130px;
     min-width: 0;
     @include t.transition((border-color), fast);
 
-    &:focus {
-      outline: none;
-      border-color: var(--color-primary);
-    }
+    option { background: $bc-card-bg; color: $bc-accent; }
+
+    &:focus { outline: none; border-color: $bc-gold; }
   }
 
   &__row-error {
@@ -385,7 +374,7 @@ $et-border:  #ede9fe;
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
@@ -395,35 +384,41 @@ $et-border:  #ede9fe;
 }
 
 .modal {
-  background: var(--color-bg-card);
+  background: $bc-surface;
+  border: 1px solid $bc-border;
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   max-width: 360px;
   width: 90%;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
   animation: scale-in 0.15s ease;
 
-  &__title  { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-2); }
+  &__title  {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    color: $bc-accent;
+  }
 
   &__body {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: #9ca3af;
     margin-bottom: var(--space-6);
     line-height: 1.6;
-    strong { color: var(--color-text); }
+    strong { color: $bc-accent; }
   }
 
   &__actions { display: flex; justify-content: flex-end; gap: var(--space-3); }
 
   &__cancel {
     padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--color-border);
+    border: 1px solid $bc-border;
     border-radius: var(--radius);
     font-size: var(--text-sm);
     font-weight: 500;
-    color: var(--color-text-muted);
+    color: #9ca3af;
     @include t.transition((background-color), fast);
-    &:hover    { background: var(--color-surface); }
+    &:hover    { background: rgba(255,255,255,0.05); }
     &:disabled { opacity: 0.5; cursor: not-allowed; }
   }
 
@@ -447,7 +442,7 @@ $et-border:  #ede9fe;
 .cat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: stretch;
@@ -458,8 +453,9 @@ $et-border:  #ede9fe;
 
 .cat-panel {
   width: min(480px, 95vw);
-  background: var(--color-bg-card);
-  box-shadow: -4px 0 40px rgba(0, 0, 0, 0.15);
+  background: $bc-card-bg;
+  border-left: 1px solid $bc-border;
+  box-shadow: -4px 0 40px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -470,8 +466,8 @@ $et-border:  #ede9fe;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-4) var(--space-5);
-    background: $et-surface;
-    border-bottom: 1px solid $et-border;
+    background: $bc-surface;
+    border-bottom: 1px solid $bc-border;
     flex-shrink: 0;
   }
 
@@ -481,12 +477,12 @@ $et-border:  #ede9fe;
     gap: var(--space-2);
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--color-text);
+    color: $bc-accent;
     text-transform: uppercase;
     letter-spacing: 0.4px;
     flex: 1;
 
-    svg { color: var(--color-primary); }
+    svg { color: $bc-gold; }
   }
 
   &__close {
@@ -495,10 +491,10 @@ $et-border:  #ede9fe;
     border-radius: var(--radius-full);
     display: grid;
     place-items: center;
-    color: var(--color-text-muted);
+    color: #6b7280;
     @include t.transition((background-color, color), fast);
 
-    &:hover { background: #fef2f2; color: var(--color-error); }
+    &:hover { background: #2d1515; color: var(--color-error); }
   }
 
   &__body {
@@ -518,13 +514,13 @@ $et-border:  #ede9fe;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
-  border: 1px solid $et-border;
-  background: #fff;
+  border: 1px solid $bc-border;
+  background: $bc-surface;
   @include t.transition((background-color, border-color), fast);
 
   &:hover {
-    background: $et-surface;
-    border-color: rgba(124, 58, 237, 0.2);
+    background: #201c2e;
+    border-color: rgba(245, 158, 11, 0.3);
   }
 
   &__dot {
@@ -538,7 +534,7 @@ $et-border:  #ede9fe;
     flex: 1;
     font-size: var(--text-sm);
     font-weight: 500;
-    color: var(--color-text);
+    color: $bc-accent;
   }
 
   &__actions {
@@ -563,28 +559,30 @@ $et-border:  #ede9fe;
     @include t.transition((background-color, color), fast);
   }
 
-  &__edit-btn   { color: var(--color-text-muted); &:hover { background: var(--color-surface); color: var(--color-primary); } }
-  &__delete-btn { color: var(--color-text-muted); &:hover { background: #fef2f2; color: var(--color-error); } }
-  &__save-btn   { color: var(--color-success);    &:hover { background: #f0fdf4; } &:disabled { opacity: 0.4; cursor: not-allowed; } }
-  &__cancel-btn { color: var(--color-text-muted); &:hover { background: var(--color-surface); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
+  &__edit-btn   { color: #6b7280; &:hover { background: rgba(245,158,11,0.12); color: $bc-gold; } }
+  &__delete-btn { color: #6b7280; &:hover { background: #2d1515; color: var(--color-error); } }
+  &__save-btn   { color: var(--color-success); &:hover { background: rgba(16,185,129,0.1); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
+  &__cancel-btn { color: #6b7280; &:hover { background: rgba(255,255,255,0.06); } &:disabled { opacity: 0.4; cursor: not-allowed; } }
 
   &__input {
     flex: 1;
     height: 34px;
-    border: 1.5px solid var(--color-border);
+    border: 1.5px solid $bc-border;
     border-radius: var(--radius);
     padding: 0 var(--space-2);
     font-family: inherit;
     font-size: var(--text-sm);
-    color: var(--color-text);
-    background: #fff;
+    color: $bc-accent;
+    background: $bc-card-bg;
     min-width: 0;
     @include t.transition((border-color, box-shadow), fast);
 
+    &::placeholder { color: #4b5563; }
+
     &:focus {
       outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+      border-color: $bc-gold;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
     }
   }
 
@@ -597,8 +595,8 @@ $et-border:  #ede9fe;
 
 // Versión formulario de la fila (edición/adición)
 .cprow--form {
-  background: #faf9ff;
-  border: 1.5px solid var(--color-primary);
+  background: #1f1a30;
+  border: 1.5px solid $bc-gold;
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);
   display: flex;
@@ -631,8 +629,8 @@ $et-border:  #ede9fe;
   &:hover { transform: scale(1.15); }
 
   &--active {
-    border-color: var(--color-text);
-    box-shadow: 0 0 0 1px #fff inset;
+    border-color: $bc-accent;
+    box-shadow: 0 0 0 1px $bc-card-bg inset;
   }
 }
 
@@ -643,13 +641,13 @@ $et-border:  #ede9fe;
 
     &__cat-select { flex: 1 1 100%; }
 
-    // Botones ocultos por defecto (sobrescribe el opacity:0 del desktop)
+    // Botones ocultos por defecto
     &__actions {
-      opacity: 1; // resetear opacity
+      opacity: 1;
       display: none;
     }
 
-    // Al tocar la tarjeta: overlay centrado con los botones
+    // Al tocar la tarjeta: overlay con los botones
     &--touched &__actions {
       display: flex;
       align-items: center;
@@ -657,9 +655,9 @@ $et-border:  #ede9fe;
       gap: var(--space-4);
       position: absolute;
       inset: 5px;
-      background: rgba(124, 58, 237, 0.10);
+      background: rgba(245, 158, 11, 0.10);
       backdrop-filter: blur(4px);
-      border: 1.5px solid rgba(124, 58, 237, 0.35);
+      border: 1.5px solid rgba(245, 158, 11, 0.35);
       border-radius: var(--radius-lg);
       z-index: 2;
       animation: fade-in 0.12s ease;
@@ -673,7 +671,7 @@ $et-border:  #ede9fe;
     }
   }
 
-  .extra__cat-filter { max-width: 110px; }
+  .bc__cat-filter { max-width: 110px; }
 }
 
 @keyframes slide-in-right {

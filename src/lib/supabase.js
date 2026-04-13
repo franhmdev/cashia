@@ -209,4 +209,19 @@ export const db = {
     remove: (token, id) =>
       dbRequest(`/extra_expense_categories?id=eq.${id}`, { token, method: 'DELETE' }),
   },
+
+  // ── Tarjeta negra ──────────────────────────────────────────────────────────
+  blackCardExpenses: {
+    list: (token, month, year) =>
+      dbRequest(
+        `/black_card_expenses?month=eq.${month}&year=eq.${year}&order=due_day.asc.nullslast,created_at.asc`,
+        { token }
+      ),
+    create: (token, payload) =>
+      dbRequest('/black_card_expenses', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/black_card_expenses?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/black_card_expenses?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
 }
