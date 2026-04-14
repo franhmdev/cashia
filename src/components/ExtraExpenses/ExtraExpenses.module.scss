@@ -36,7 +36,8 @@ $et-border:  #ede9fe;
   }
 
   &__title {
-    flex-shrink: 0;
+    flex: 0 1 auto;
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -46,7 +47,7 @@ $et-border:  #ede9fe;
     text-transform: uppercase;
     letter-spacing: 0.4px;
 
-    svg { color: var(--color-primary); }
+    svg { color: var(--color-primary); flex-shrink: 0; }
   }
 
   &__header-right {
@@ -673,7 +674,21 @@ $et-border:  #ede9fe;
     }
   }
 
-  .extra__cat-filter { max-width: 110px; }
+  .extra__cat-filter { max-width: 80px; }
+
+  .extra__header {
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+    gap: var(--space-2);
+  }
+
+  .extra__title {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
 }
 
 @keyframes slide-in-right {

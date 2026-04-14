@@ -51,6 +51,11 @@
     letter-spacing: -0.5px;
     min-width: 220px;
     text-align: center;
+
+    @include t.mq-down('md') {
+      font-size: var(--text-lg);
+      min-width: 0;
+    }
   }
 
   &__modules {
