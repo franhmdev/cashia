@@ -181,6 +181,11 @@
       background-color: #fef2f2;
       color: #ef4444;
     }
+
+    &--neutral:hover {
+      background-color: var(--color-surface);
+      color: var(--color-primary);
+    }
   }
 }
 

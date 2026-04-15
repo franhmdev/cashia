@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from '@/router'
 import { useAuth } from '@/hooks/useAuth'
+import { LoansPanel } from '@/components/LoansPanel/LoansPanel'
 import styles from './Navbar.module.scss'
 
 function getInitials(user) {
@@ -14,9 +15,10 @@ function getInitials(user) {
 
 export function Navbar() {
   const { logout, user }  = useAuth()
-  const [open, setOpen]   = useState(false)
-  const menuRef           = useRef(null)
-  const avatarUrl         = user?.user_metadata?.avatar_url
+  const [open, setOpen]         = useState(false)
+  const [showLoans, setShowLoans] = useState(false)
+  const menuRef                   = useRef(null)
+  const avatarUrl                 = user?.user_metadata?.avatar_url
 
   useEffect(() => {
     if (!open) return
@@ -28,6 +30,7 @@ export function Navbar() {
   }, [open])
 
   return (
+    <>
     <header className={styles.navbar}>
       <nav className={`${styles['navbar__inner']} o-container`} aria-label="Navegación principal">
         <Link to="/home" className={styles['navbar__brand']}>
@@ -59,6 +62,20 @@ export function Navbar() {
                 </div>
                 <hr className={styles['navbar__dropdown-divider']} />
                 <button
+                  className={`${styles['navbar__dropdown-item']} ${styles['navbar__dropdown-item--neutral']}`}
+                  role="menuitem"
+                  onClick={() => { setOpen(false); setShowLoans(true) }}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                    <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                    <line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" strokeWidth="1.8" />
+                    <line x1="6" y1="15" x2="9" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    <line x1="12" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  </svg>
+                  Mis préstamos
+                </button>
+                <hr className={styles['navbar__dropdown-divider']} />
+                <button
                   className={styles['navbar__dropdown-item']}
                   role="menuitem"
                   onClick={() => { setOpen(false); logout() }}
@@ -76,6 +93,8 @@ export function Navbar() {
         )}
       </nav>
     </header>
+      {showLoans && <LoansPanel onClose={() => setShowLoans(false)} />}
+    </>
   )
 }
 

@@ -210,6 +210,18 @@ export const db = {
       dbRequest(`/extra_expense_categories?id=eq.${id}`, { token, method: 'DELETE' }),
   },
 
+  // ── Préstamos ──────────────────────────────────────────────────────────────
+  loans: {
+    list: (token) =>
+      dbRequest('/loans?order=created_at.asc', { token }),
+    create: (token, payload) =>
+      dbRequest('/loans', { token, method: 'POST', body: payload }),
+    update: (token, id, payload) =>
+      dbRequest(`/loans?id=eq.${id}`, { token, method: 'PATCH', body: payload }),
+    remove: (token, id) =>
+      dbRequest(`/loans?id=eq.${id}`, { token, method: 'DELETE' }),
+  },
+
   // ── Tarjeta negra ──────────────────────────────────────────────────────────
   blackCardExpenses: {
     list: (token, month, year) =>
